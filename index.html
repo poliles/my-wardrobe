@@ -10,24 +10,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:#f6f1ea;
-      --card:#fffaf4;
+      --bg:#f3f5f8;
+      --card:#ffffff;
       --card-strong:#ffffff;
-      --text:#221b17;
-      --muted:#74675d;
-      --line:#eadfd3;
-      --soft:#f0e6da;
-      --soft-2:#ead8c7;
-      --accent:#5a2f26;
-      --accent-2:#7a3f35;
-      --accent-soft:#f5e4df;
-      --green:#2f5d46;
-      --green-soft:#e3eee6;
-      --gold:#9b6b2f;
+      --text:#172032;
+      --muted:#667085;
+      --line:#dde4ee;
+      --soft:#eef2f7;
+      --soft-2:#d8e0ec;
+      --accent:#36517c;
+      --accent-2:#4a6694;
+      --accent-soft:#e4ebf6;
+      --green:#345f4b;
+      --green-soft:#e6f0eb;
+      --gold:#9a7138;
       --danger:#a13b2f;
       --danger-soft:#fff0ed;
-      --shadow:0 14px 36px rgba(57,38,23,.08);
-      --shadow-hover:0 18px 44px rgba(57,38,23,.13);
+      --shadow:0 14px 36px rgba(23,32,50,.07);
+      --shadow-hover:0 18px 44px rgba(23,32,50,.12);
     }
 
     * { box-sizing:border-box; font-family:"Inter Tight",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
@@ -40,76 +40,61 @@
     .hidden-input { display:none; }
     .container { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
 
-    .hero {
-      min-height:238px;
-      background:
-        radial-gradient(circle at 18% 24%, rgba(255,255,255,.55) 0 9%, transparent 10%),
-        linear-gradient(135deg, #6c342c 0%, #a66d4f 36%, #dcc3a5 70%, #f4eadb 100%);
-      position:relative;
-      overflow:hidden;
-      border-bottom:1px solid rgba(255,255,255,.5);
-    }
-    .hero:after {
-      content:"";
-      position:absolute;
-      inset:auto -8% -38% auto;
-      width:520px;
-      height:520px;
-      border-radius:999px;
-      background:rgba(255,250,244,.44);
-      filter:blur(1px);
-    }
-    .hero-inner {
-      position:relative;
-      z-index:1;
-      padding:32px 0 30px;
+    .banner { width:100%; height:220px; object-fit:cover; display:block; }
+    .home-top {
       display:flex;
       justify-content:space-between;
+      gap:22px;
       align-items:flex-end;
-      gap:24px;
       flex-wrap:wrap;
+      margin:28px 0 22px;
     }
-    .hero-copy { flex:1 1 560px; max-width:780px; }
+    .home-copy { flex:1 1 520px; max-width:780px; }
+    .home-controls {
+      flex:0 0 auto;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:10px;
+    }
     .eyebrow {
       display:inline-flex;
       align-items:center;
       gap:8px;
-      background:rgba(255,250,244,.88);
-      border:1px solid rgba(255,255,255,.62);
+      background:#fff;
+      border:1px solid var(--line);
       border-radius:999px;
       padding:8px 12px;
       font-size:14px;
-      color:#5b4238;
-      box-shadow:0 10px 28px rgba(57,38,23,.12);
-      backdrop-filter:blur(10px);
+      color:var(--muted);
+      box-shadow:var(--shadow);
     }
-    .dot { width:10px; height:10px; border-radius:999px; background:#7c2f2f; }
+    .dot { width:10px; height:10px; border-radius:999px; background:var(--accent); }
     .title {
-      margin-top:14px;
-      font-size:clamp(38px,5.4vw,64px);
-      line-height:.96;
+      margin-top:12px;
+      font-size:clamp(34px,5vw,56px);
+      line-height:1;
       letter-spacing:-.055em;
       font-weight:800;
-      color:#fffaf4;
-      text-shadow:0 10px 28px rgba(57,38,23,.22);
-      max-width:860px;
+      color:var(--text);
+      max-width:880px;
     }
     .subtitle {
-      margin-top:14px;
+      margin-top:13px;
       max-width:720px;
-      color:rgba(255,250,244,.9);
-      font-size:18px;
+      color:var(--muted);
+      font-size:17px;
       line-height:1.5;
     }
+    .global-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
 
     .hero-actions, .actions, .toolbar, .modal-actions { display:flex; gap:10px; flex-wrap:wrap; }
     .nav-card {
-      background:rgba(255,250,244,.86);
-      border:1px solid rgba(255,255,255,.7);
+      background:#fff;
+      border:1px solid var(--line);
       border-radius:26px;
       padding:10px;
-      box-shadow:0 14px 34px rgba(57,38,23,.12);
-      backdrop-filter:blur(10px);
+      box-shadow:var(--shadow);
       display:flex;
       gap:6px;
       flex-wrap:wrap;
@@ -125,16 +110,16 @@
       font-size:14px;
       transition:.18s ease;
     }
-    .nav-btn.active, .pill.active { background:var(--accent); color:#fffaf4; }
-    .nav-btn:hover, .pill:hover { background:rgba(90,47,38,.08); color:var(--text); }
-    .nav-btn.active:hover, .pill.active:hover { background:var(--accent); color:#fffaf4; }
+    .nav-btn.active, .pill.active { background:var(--accent); color:#fff; }
+    .nav-btn:hover, .pill:hover { background:var(--accent-soft); color:var(--text); }
+    .nav-btn.active:hover, .pill.active:hover { background:var(--accent); color:#fff; }
 
     .top-panel {
-      margin:-34px auto 22px;
+      margin:8px auto 26px;
       position:relative;
       z-index:3;
       background:var(--card);
-      border:1px solid rgba(234,223,211,.92);
+      border:1px solid var(--line);
       border-radius:30px;
       box-shadow:var(--shadow);
       padding:18px;
@@ -164,8 +149,8 @@
       transition:.18s ease;
     }
     .field input:focus, .field select:focus, .field textarea:focus {
-      border-color:#c8aa92;
-      box-shadow:0 0 0 4px rgba(122,63,53,.08);
+      border-color:var(--accent-2);
+      box-shadow:0 0 0 4px rgba(54,81,124,.10);
     }
     .field textarea { min-height:108px; resize:vertical; }
     .quick-tabs { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
@@ -211,7 +196,7 @@
     .cover {
       min-height:210px;
       position:relative;
-      background:linear-gradient(135deg, #ead8c7, #fff8ef);
+      background:linear-gradient(135deg, #d8e0ec, #f8fafc);
       overflow:hidden;
     }
     .cover img { width:100%; height:236px; object-fit:cover; }
@@ -252,18 +237,18 @@
       height:42px;
       border:1px solid rgba(255,255,255,.62);
       background:rgba(255,250,244,.84);
-      color:#8a5849;
+      color:var(--accent);
       border-radius:16px;
       font-size:20px;
       display:flex;
       align-items:center;
       justify-content:center;
-      box-shadow:0 12px 28px rgba(57,38,23,.14);
+      box-shadow:0 12px 28px rgba(23,32,50,.14);
       backdrop-filter:blur(10px);
       transition:.18s ease;
       z-index:2;
     }
-    .favorite-btn.active { background:#7c2f2f; color:#fffaf4; }
+    .favorite-btn.active { background:var(--accent); color:#fff; }
     .favorite-btn:hover { transform:scale(1.04); }
     .card-body { padding:18px; }
     .badge-row, .chip-row { display:flex; flex-wrap:wrap; gap:7px; }
@@ -308,7 +293,7 @@
       justify-content:center;
       gap:8px;
     }
-    .primary-btn { background:var(--accent); color:#fffaf4; }
+    .primary-btn { background:var(--accent); color:#fff; }
     .subtle-btn, .ghost-btn { background:#fff; color:var(--text); border:1px solid var(--line); }
     .danger-btn { background:var(--danger-soft); color:var(--danger); border:1px solid #f1c8c0; }
     .small-btn { padding:9px 11px; font-size:13px; border:1px solid var(--line); background:#fff; color:var(--text); border-radius:14px; }
@@ -333,14 +318,14 @@
       text-align:left;
       font-weight:800;
     }
-    .category-filter.active { background:var(--accent); color:#fffaf4; border-color:var(--accent); }
+    .category-filter.active { background:var(--accent); color:#fff; border-color:var(--accent); }
     .item-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
     .item-card { padding:14px; }
     .item-photo {
       height:176px;
       border-radius:22px;
       overflow:hidden;
-      background:linear-gradient(135deg, #efe1d3, #fff7ed);
+      background:linear-gradient(135deg, #d8e0ec, #f8fafc);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -362,7 +347,7 @@
       border-radius:24px;
       min-height:460px;
       overflow:hidden;
-      background:linear-gradient(135deg, #ead8c7, #fff8ef);
+      background:linear-gradient(135deg, #d8e0ec, #f8fafc);
       position:relative;
     }
     .large-cover img { width:100%; height:460px; object-fit:cover; }
@@ -396,7 +381,7 @@
       position:fixed;
       inset:0;
       z-index:50;
-      background:rgba(34,27,23,.48);
+      background:rgba(23,32,50,.48);
       display:flex;
       align-items:center;
       justify-content:center;
@@ -411,7 +396,7 @@
       border:1px solid rgba(255,255,255,.6);
       border-radius:30px;
       padding:22px;
-      box-shadow:0 30px 80px rgba(34,27,23,.26);
+      box-shadow:0 30px 80px rgba(23,32,50,.26);
     }
     .modal-title { font-size:34px; letter-spacing:-.04em; line-height:1; font-weight:800; }
     .modal-desc { margin-top:10px; color:var(--muted); line-height:1.45; }
@@ -420,8 +405,8 @@
     .three-cols { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
     .image-picker {
       min-height:164px;
-      border:1px dashed #cfb9a5;
-      background:#fff7ef;
+      border:1px dashed #b5c3d8;
+      background:#f6f8fb;
       border-radius:22px;
       padding:18px;
       display:flex;
@@ -453,7 +438,7 @@
       padding:10px;
       font-size:14px;
       color:var(--muted);
-      background:#fffaf4;
+      background:#f8fafc;
     }
     .check-item input { margin-top:3px; accent-color:var(--accent); }
     .check-item strong { color:var(--text); }
@@ -469,13 +454,14 @@
     }
     @media (max-width:680px) {
       .container { width:min(100% - 20px, 1180px); }
-      .hero { min-height:260px; }
-      .hero-inner { padding:24px 0 42px; }
+      .banner { height:164px; }
+      .home-top { flex-direction:column; align-items:stretch; gap:16px; margin:22px 0 18px; }
+      .home-controls { align-items:stretch; }
       .title { font-size:42px; }
       .subtitle { font-size:16px; }
-      .nav-card, .hero-actions, .actions, .toolbar, .modal-actions, .quick-tabs { width:100%; }
+      .nav-card, .global-actions, .hero-actions, .actions, .toolbar, .modal-actions, .quick-tabs { width:100%; }
       .nav-btn, .pill, .primary-btn, .subtle-btn, .ghost-btn, .danger-btn { flex:1 1 100%; width:100%; }
-      .top-panel { margin-top:-28px; border-radius:26px; }
+      .top-panel { margin-top:10px; border-radius:26px; }
       .filter-grid, .cards, .item-grid, .palette-grid, .wishlist-grid, .stats-grid, .two-cols, .three-cols, .meta-grid, .checklist-box { grid-template-columns:1fr; }
       .cover, .cover img, .cover-placeholder { min-height:230px; height:230px; }
       .large-cover, .large-cover img, .large-cover .cover-placeholder { min-height:380px; height:380px; }
@@ -626,8 +612,44 @@
     </div>
   </div>
 
+  <div id="wishlistModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wishlistModalTitle">
+      <h2 id="wishlistModalTitle" class="modal-title">Добавить покупку</h2>
+      <p class="modal-desc">Добавляй не просто «хочу», а зачем вещь нужна: с чем будет сочетаться и какую дырку в гардеробе закроет.</p>
+
+      <div class="form">
+        <div class="two-cols">
+          <div class="field">
+            <label for="wishNameInput">Что купить</label>
+            <input id="wishNameInput" type="text" placeholder="Например, коричневый ремень">
+          </div>
+          <div class="field">
+            <label for="wishPriorityInput">Приоритет</label>
+            <select id="wishPriorityInput">
+              <option value="высокий">высокий</option>
+              <option value="средний">средний</option>
+              <option value="низкий">низкий</option>
+              <option value="подумать 2 недели">подумать 2 недели</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="wishReasonInput">Зачем эта вещь</label>
+          <textarea id="wishReasonInput" placeholder="Например: будет сочетаться с джинсами, лоферами и бордовым кардиганом"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="ghost-btn" data-close-modal="wishlist">Отмена</button>
+        <button class="primary-btn" data-save-wishlist>Сохранить покупку</button>
+      </div>
+      <p class="hint">Покупки сохраняются вместе со всем стилем и попадают в общий экспорт JSON.</p>
+    </div>
+  </div>
+
   <script>
-    const STORAGE_KEY = "polina-wardrobe-v1";
+    const STORAGE_KEY = "polina-wardrobe-v2";
 
     const CATEGORY_META = {
       outerwear: { icon: "🧥", title: "Верхняя одежда" },
@@ -678,11 +700,11 @@
     };
 
     const TONES = [
-      "linear-gradient(135deg, #79352e 0%, #c08a66 54%, #ead8c7 100%)",
-      "linear-gradient(135deg, #314f3e 0%, #9a8b5f 52%, #f0dfc4 100%)",
-      "linear-gradient(135deg, #2d3858 0%, #8a6e62 56%, #f4e5d6 100%)",
-      "linear-gradient(135deg, #6b4636 0%, #c8a277 58%, #fff5e8 100%)",
-      "linear-gradient(135deg, #8a2f2a 0%, #9d6b4c 48%, #e4c8a6 100%)"
+      "linear-gradient(135deg, #36517c 0%, #6f86aa 54%, #d8e0ec 100%)",
+      "linear-gradient(135deg, #2d425f 0%, #7891b8 52%, #edf2f7 100%)",
+      "linear-gradient(135deg, #26364f 0%, #5e759a 56%, #e6ebf3 100%)",
+      "linear-gradient(135deg, #3b4e6d 0%, #9ca9ba 58%, #f8fafc 100%)",
+      "linear-gradient(135deg, #36517c 0%, #526b95 48%, #d4dce8 100%)"
     ];
 
     const DEFAULT_DATA = {
@@ -974,8 +996,10 @@
       },
       itemModalOpen: false,
       outfitModalOpen: false,
+      wishlistModalOpen: false,
       editingItemId: null,
       editingOutfitId: null,
+      editingWishId: null,
       itemPhotoDraft: null,
       outfitPhotoDraft: null
     };
@@ -1090,19 +1114,24 @@
 
     function renderLayout(content) {
       return `
-        <header class="hero">
-          <div class="container hero-inner">
-            <div class="hero-copy">
-              <div class="eyebrow"><span class="dot"></span>Мой гардероб</div>
-              <h1 class="title">Хей, сегодня ты снова красотка</h1>
-              <p class="subtitle">Здесь живут вещи, готовые образы, палитры и маленькие стилевые подсказки, чтобы не держать весь гардероб в голове.</p>
-            </div>
+        <img class="banner" src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1600&q=80" alt="Вешалка с одеждой">
+        <header class="container home-top">
+          <div class="home-copy">
+            <div class="eyebrow"><span class="dot"></span>Мой гардероб</div>
+            <h1 class="title">Хей, сегодня ты снова красотка</h1>
+            <p class="subtitle">Здесь живут вещи, готовые образы, палитры и маленькие стилевые подсказки, чтобы не держать весь гардероб в голове.</p>
+          </div>
+          <div class="home-controls">
             <nav class="nav-card" aria-label="Основная навигация">
               ${navButton("outfits", "Образы")}
               ${navButton("items", "Вещи")}
               ${navButton("palettes", "Палитры")}
               ${navButton("wishlist", "Покупки")}
             </nav>
+            <div class="global-actions">
+              <button class="subtle-btn" data-export-all>Экспорт стиля</button>
+              <button class="subtle-btn" data-import-all>Импорт стиля</button>
+            </div>
           </div>
         </header>
         ${content}
@@ -1213,8 +1242,6 @@
             </div>
             <div class="actions">
               <button class="primary-btn" data-open-outfit-modal>+ Добавить образ</button>
-              <button class="subtle-btn" data-export-all>Экспорт JSON</button>
-              <button class="subtle-btn" data-import-all>Импорт JSON</button>
             </div>
           </div>
           <section class="cards">${cards}</section>
@@ -1240,7 +1267,7 @@
       return `
         <article class="outfit-card" data-open-outfit="${escapeHtml(outfit.id)}">
           <div class="cover">
-            <button class="favorite-btn ${outfit.favorite ? "active" : ""}" title="Добавить в любимые" aria-label="Добавить в любимые" data-toggle-favorite="${escapeHtml(outfit.id)}">${outfit.favorite ? "♥" : "♡"}</button>
+            <button class="favorite-btn ${outfit.favorite ? "active" : ""}" title="Добавить/убрать из любимых" aria-label="Добавить или убрать из любимых" data-toggle-favorite="${escapeHtml(outfit.id)}">${outfit.favorite ? "♥" : "♡"}</button>
             ${outfit.photo
               ? `<img src="${outfit.photo}" alt="${escapeHtml(outfit.title)}">`
               : `<div class="cover-placeholder" style="--tone:${toneFor(outfit)}"><div class="cover-emoji">${outfit.russianDetail ? "🪆" : "☕"}</div><div class="cover-text">Место для фото образа. Можно загрузить своё изображение в карточке.</div></div>`
@@ -1284,8 +1311,6 @@
             </div>
             <div class="actions">
               <button class="primary-btn" data-open-item-modal>+ Добавить вещь</button>
-              <button class="subtle-btn" data-export-all>Экспорт JSON</button>
-              <button class="subtle-btn" data-import-all>Импорт JSON</button>
             </div>
           </div>
 
@@ -1345,7 +1370,7 @@
                   ? `<img src="${outfit.photo}" alt="${escapeHtml(outfit.title)}">`
                   : `<div class="cover-placeholder" style="--tone:${toneFor(outfit)}"><div class="cover-emoji">${outfit.russianDetail ? "🪆" : "☕"}</div><div class="cover-text">Загрузи фото этого образа, чтобы карточка была совсем настоящей.</div></div>`
                 }
-                <button class="favorite-btn ${outfit.favorite ? "active" : ""}" title="Добавить в любимые" data-toggle-favorite="${escapeHtml(outfit.id)}">${outfit.favorite ? "♥" : "♡"}</button>
+                <button class="favorite-btn ${outfit.favorite ? "active" : ""}" title="Добавить/убрать из любимых" data-toggle-favorite="${escapeHtml(outfit.id)}">${outfit.favorite ? "♥" : "♡"}</button>
               </div>
               <div class="upload-strip">
                 <label class="subtle-btn" for="detailOutfitPhotoInput">Загрузить фото</label>
@@ -1388,7 +1413,7 @@
           </section>
         </main>
       `;
-      return renderLayout(content);
+      return content;
     }
 
     function detailMeta(label, value) {
@@ -1408,17 +1433,66 @@
       `;
     }
 
+    function colorFrequency() {
+      const counts = {};
+      state.data.items.forEach((item) => (item.colors || []).forEach((color) => {
+        counts[color] = (counts[color] || 0) + 1;
+      }));
+      state.data.outfits.forEach((outfit) => (outfit.colors || []).forEach((color) => {
+        counts[color] = (counts[color] || 0) + 1;
+      }));
+      return counts;
+    }
+
+    function buildAutoPalettes() {
+      const counts = colorFrequency();
+      const colors = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ru"))
+        .map(([color]) => color);
+
+      const palettes = [];
+      if (colors.length) {
+        palettes.push({
+          id: "auto-main-colors",
+          name: "Авто: цвета гардероба",
+          colors: colors.slice(0, 8),
+          description: "Собирается автоматически по цветам вещей и образов. Когда добавятся твои реальные вещи, эта палитра обновится сама.",
+          auto: true
+        });
+      }
+
+      const seen = new Set();
+      state.data.outfits.forEach((outfit) => {
+        const outfitColors = unique(outfit.colors || []).slice(0, 6);
+        if (outfitColors.length < 2) return;
+        const key = outfitColors.join("|");
+        if (seen.has(key)) return;
+        seen.add(key);
+        palettes.push({
+          id: `auto-${outfit.id}`,
+          name: `Авто: ${outfit.title}`,
+          colors: outfitColors,
+          description: "Палитра собрана из цветов этого образа.",
+          auto: true
+        });
+      });
+
+      return palettes.slice(0, 7);
+    }
+
     function renderPalettesPage() {
+      const autoPalettes = buildAutoPalettes();
+      const allPalettes = [...autoPalettes, ...state.data.palettes];
       const content = `
         <main class="container detail-wrap">
           <div class="section-head">
             <div>
               <h2 class="section-title">Палитры</h2>
-              <p class="section-desc">Палитры помогают собирать гардероб не хаотично, а вокруг понятных сочетаний.</p>
+              <p class="section-desc">Первые карточки с пометкой «авто» собираются сами по цветам вещей и образов. Когда ты пришлёшь весь гардероб, я помогу занести вещи, и палитры начнут отражать уже твой реальный шкаф.</p>
             </div>
           </div>
           <section class="palette-grid">
-            ${state.data.palettes.map(renderPaletteCard).join("")}
+            ${allPalettes.map(renderPaletteCard).join("")}
           </section>
         </main>
       `;
@@ -1430,6 +1504,7 @@
       const matchingItems = state.data.items.filter((item) => (palette.colors || []).some((color) => (item.colors || []).includes(color)));
       return `
         <article class="palette-card">
+          ${palette.auto ? `<span class="badge good">авто</span>` : ""}
           <h3 class="palette-name">${escapeHtml(palette.name)}</h3>
           <p class="palette-desc">${escapeHtml(palette.description)}</p>
           <div class="swatches">
@@ -1444,6 +1519,20 @@
     }
 
     function renderWishlistPage() {
+      const cards = state.data.wishlist.length
+        ? state.data.wishlist.map((wish) => `
+          <article class="wishlist-card">
+            <span class="badge warm">${escapeHtml(wish.priority)}</span>
+            <h3 class="wishlist-name">${escapeHtml(wish.name)}</h3>
+            <p class="wishlist-desc">${escapeHtml(wish.reason)}</p>
+            <div class="item-actions">
+              <button class="small-btn" data-edit-wishlist="${escapeHtml(wish.id)}">Редактировать</button>
+              <button class="small-btn" data-delete-wishlist="${escapeHtml(wish.id)}">Удалить</button>
+            </div>
+          </article>
+        `).join("")
+        : `<div class="empty-card"><strong>Список покупок пока пуст</strong>Добавь вещь, которую хочешь купить осознанно: с причиной, приоритетом и сочетаниями.</div>`;
+
       const content = `
         <main class="container detail-wrap">
           <div class="section-head">
@@ -1451,16 +1540,11 @@
               <h2 class="section-title">Список покупок</h2>
               <p class="section-desc">Не просто «хочу», а зачем вещь нужна и какие пробелы в гардеробе она закрывает.</p>
             </div>
+            <div class="actions">
+              <button class="primary-btn" data-open-wishlist-modal>+ Добавить покупку</button>
+            </div>
           </div>
-          <section class="wishlist-grid">
-            ${state.data.wishlist.map((wish) => `
-              <article class="wishlist-card">
-                <span class="badge warm">${escapeHtml(wish.priority)}</span>
-                <h3 class="wishlist-name">${escapeHtml(wish.name)}</h3>
-                <p class="wishlist-desc">${escapeHtml(wish.reason)}</p>
-              </article>
-            `).join("")}
-          </section>
+          <section class="wishlist-grid">${cards}</section>
         </main>
       `;
       return renderLayout(content);
@@ -1475,6 +1559,7 @@
 
       renderItemModal();
       renderOutfitModal();
+      renderWishlistModal();
     }
 
     function openItemModal(itemId = null) {
@@ -1561,6 +1646,57 @@
         : `<div><strong>${escapeHtml(title)}</strong><span>Нажми, чтобы загрузить изображение</span></div>`;
     }
 
+    function openWishlistModal(wishId = null) {
+      state.editingWishId = wishId;
+      state.wishlistModalOpen = true;
+      renderWishlistModal();
+    }
+
+    function renderWishlistModal() {
+      const modal = document.getElementById("wishlistModal");
+      if (!modal) return;
+      modal.classList.toggle("hidden", !state.wishlistModalOpen);
+      modal.setAttribute("aria-hidden", state.wishlistModalOpen ? "false" : "true");
+      if (!state.wishlistModalOpen) return;
+
+      const wish = state.editingWishId ? state.data.wishlist.find((entry) => entry.id === state.editingWishId) : null;
+      document.getElementById("wishlistModalTitle").textContent = wish ? "Редактировать покупку" : "Добавить покупку";
+      document.getElementById("wishNameInput").value = wish?.name || "";
+      document.getElementById("wishReasonInput").value = wish?.reason || "";
+      document.getElementById("wishPriorityInput").value = wish?.priority || "средний";
+    }
+
+    function saveWishlistFromModal() {
+      const name = document.getElementById("wishNameInput").value.trim();
+      const reason = document.getElementById("wishReasonInput").value.trim();
+      const priority = document.getElementById("wishPriorityInput").value;
+
+      if (!name) {
+        alert("Напиши, что хочешь купить.");
+        return;
+      }
+
+      const payload = { name, reason, priority };
+      if (state.editingWishId) {
+        const index = state.data.wishlist.findIndex((wish) => wish.id === state.editingWishId);
+        if (index !== -1) state.data.wishlist[index] = { ...state.data.wishlist[index], ...payload };
+      } else {
+        state.data.wishlist.unshift({ id: createId("wish"), ...payload });
+      }
+
+      saveData();
+      closeModal("wishlist");
+    }
+
+    function deleteWishlistItem(wishId) {
+      const wish = state.data.wishlist.find((entry) => entry.id === wishId);
+      if (!wish) return;
+      if (!confirm(`Удалить покупку «${wish.name}»?`)) return;
+      state.data.wishlist = state.data.wishlist.filter((entry) => entry.id !== wishId);
+      saveData();
+      render();
+    }
+
     function closeModal(type) {
       if (type === "item") {
         state.itemModalOpen = false;
@@ -1571,6 +1707,10 @@
         state.outfitModalOpen = false;
         state.editingOutfitId = null;
         state.outfitPhotoDraft = null;
+      }
+      if (type === "wishlist") {
+        state.wishlistModalOpen = false;
+        state.editingWishId = null;
       }
       render();
     }
@@ -1637,7 +1777,10 @@
 
       if (state.editingOutfitId) {
         const index = state.data.outfits.findIndex((outfit) => outfit.id === state.editingOutfitId);
-        if (index !== -1) state.data.outfits[index] = { ...state.data.outfits[index], ...payload };
+        if (index !== -1) {
+          const currentFavorite = state.data.outfits[index].favorite;
+          state.data.outfits[index] = { ...state.data.outfits[index], ...payload, favorite: status === "любимый" ? true : currentFavorite };
+        }
       } else {
         state.data.outfits.unshift({
           id: createId("outfit"),
@@ -1656,6 +1799,7 @@
       if (!outfit) return;
       outfit.favorite = !outfit.favorite;
       if (outfit.favorite && outfit.status === "готовый образ") outfit.status = "любимый";
+      if (!outfit.favorite && outfit.status === "любимый") outfit.status = "готовый образ";
       saveData();
       render();
     }
@@ -1708,12 +1852,12 @@
 
     function exportAll() {
       const payload = {
-        type: "polina-wardrobe",
+        type: "polina-style",
         version: 1,
         exportedAt: new Date().toISOString(),
         ...state.data
       };
-      downloadJson(payload, "moi-garderob.json");
+      downloadJson(payload, "moi-stil.json");
     }
 
     function downloadJson(payload, filename) {
@@ -1793,18 +1937,18 @@
         return;
       }
 
+      const favorite = event.target.closest("[data-toggle-favorite]");
+      if (favorite) {
+        event.stopPropagation();
+        toggleFavorite(favorite.dataset.toggleFavorite);
+        return;
+      }
+
       const openOutfit = event.target.closest("[data-open-outfit]");
       if (openOutfit) {
         state.page = "outfit-detail";
         state.selectedOutfitId = openOutfit.dataset.openOutfit;
         render();
-        return;
-      }
-
-      const favorite = event.target.closest("[data-toggle-favorite]");
-      if (favorite) {
-        event.stopPropagation();
-        toggleFavorite(favorite.dataset.toggleFavorite);
         return;
       }
 
@@ -1815,6 +1959,11 @@
 
       if (event.target.closest("[data-open-outfit-modal]")) {
         openOutfitModal();
+        return;
+      }
+
+      if (event.target.closest("[data-open-wishlist-modal]")) {
+        openWishlistModal();
         return;
       }
 
@@ -1834,6 +1983,11 @@
         return;
       }
 
+      if (event.target.closest("[data-save-wishlist]")) {
+        saveWishlistFromModal();
+        return;
+      }
+
       const editItem = event.target.closest("[data-edit-item]");
       if (editItem) {
         openItemModal(editItem.dataset.editItem);
@@ -1850,6 +2004,18 @@
       if (category) {
         state.filters.itemCategory = category.dataset.itemCategory;
         render();
+        return;
+      }
+
+      const editWish = event.target.closest("[data-edit-wishlist]");
+      if (editWish) {
+        openWishlistModal(editWish.dataset.editWishlist);
+        return;
+      }
+
+      const deleteWish = event.target.closest("[data-delete-wishlist]");
+      if (deleteWish) {
+        deleteWishlistItem(deleteWish.dataset.deleteWishlist);
         return;
       }
 
@@ -1946,6 +2112,7 @@
       if (event.key !== "Escape") return;
       if (state.itemModalOpen) closeModal("item");
       if (state.outfitModalOpen) closeModal("outfit");
+      if (state.wishlistModalOpen) closeModal("wishlist");
     });
 
     document.getElementById("itemModal").addEventListener("click", (event) => {
@@ -1954,6 +2121,10 @@
 
     document.getElementById("outfitModal").addEventListener("click", (event) => {
       if (event.target.id === "outfitModal") closeModal("outfit");
+    });
+
+    document.getElementById("wishlistModal").addEventListener("click", (event) => {
+      if (event.target.id === "wishlistModal") closeModal("wishlist");
     });
 
     render();
