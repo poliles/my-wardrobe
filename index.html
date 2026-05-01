@@ -38,24 +38,24 @@
     h1,h2,h3,p { margin:0; }
     img { max-width:100%; display:block; }
     .hidden-input { display:none; }
-    .container { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
+    .container { width:min(1120px, calc(100% - 32px)); margin:0 auto; }
 
-    .banner { width:100%; height:220px; object-fit:cover; display:block; }
+    .banner { width:100%; height:200px; object-fit:cover; display:block; }
     .home-top {
       display:flex;
       justify-content:space-between;
-      gap:22px;
+      gap:20px;
       align-items:flex-end;
       flex-wrap:wrap;
-      margin:28px 0 22px;
+      margin:28px 0 24px;
     }
-    .home-copy { flex:1 1 520px; max-width:780px; }
+    .home-copy { flex:1 1 430px; max-width:760px; }
     .home-controls {
-      flex:0 0 auto;
       display:flex;
       flex-direction:column;
-      align-items:flex-end;
       gap:10px;
+      align-items:flex-end;
+      flex:0 0 auto;
     }
     .eyebrow {
       display:inline-flex;
@@ -72,18 +72,18 @@
     .dot { width:10px; height:10px; border-radius:999px; background:var(--accent); }
     .title {
       margin-top:12px;
-      font-size:clamp(34px,5vw,56px);
-      line-height:1;
-      letter-spacing:-.055em;
+      font-size:clamp(32px,4vw,48px);
+      line-height:1.02;
+      letter-spacing:-.04em;
       font-weight:800;
       color:var(--text);
-      max-width:880px;
+      max-width:760px;
     }
     .subtitle {
-      margin-top:13px;
-      max-width:720px;
+      margin-top:12px;
+      max-width:680px;
       color:var(--muted);
-      font-size:17px;
+      font-size:16px;
       line-height:1.5;
     }
     .global-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
@@ -92,8 +92,8 @@
     .nav-card {
       background:#fff;
       border:1px solid var(--line);
-      border-radius:26px;
-      padding:10px;
+      border-radius:18px;
+      padding:6px;
       box-shadow:var(--shadow);
       display:flex;
       gap:6px;
@@ -104,8 +104,8 @@
       border:0;
       background:transparent;
       color:var(--muted);
-      padding:11px 14px;
-      border-radius:16px;
+      padding:11px 16px;
+      border-radius:14px;
       font-weight:800;
       font-size:14px;
       transition:.18s ease;
@@ -115,7 +115,7 @@
     .nav-btn.active:hover, .pill.active:hover { background:var(--accent); color:#fff; }
 
     .top-panel {
-      margin:8px auto 26px;
+      margin:0 auto 26px;
       position:relative;
       z-index:3;
       background:var(--card);
@@ -453,7 +453,7 @@
       .side-panel { position:static; }
     }
     @media (max-width:680px) {
-      .container { width:min(100% - 20px, 1180px); }
+      .container { width:min(100% - 20px, 1120px); }
       .banner { height:164px; }
       .home-top { flex-direction:column; align-items:stretch; gap:16px; margin:22px 0 18px; }
       .home-controls { align-items:stretch; }
@@ -1115,25 +1115,27 @@
     function renderLayout(content) {
       return `
         <img class="banner" src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1600&q=80" alt="Вешалка с одеждой">
-        <header class="container home-top">
-          <div class="home-copy">
-            <div class="eyebrow"><span class="dot"></span>Мой гардероб</div>
-            <h1 class="title">Хей, сегодня ты снова красотка</h1>
-            <p class="subtitle">Здесь живут вещи, готовые образы, палитры и маленькие стилевые подсказки, чтобы не держать весь гардероб в голове.</p>
-          </div>
-          <div class="home-controls">
-            <nav class="nav-card" aria-label="Основная навигация">
-              ${navButton("outfits", "Образы")}
-              ${navButton("items", "Вещи")}
-              ${navButton("palettes", "Палитры")}
-              ${navButton("wishlist", "Покупки")}
-            </nav>
-            <div class="global-actions">
-              <button class="subtle-btn" data-export-all>Экспорт стиля</button>
-              <button class="subtle-btn" data-import-all>Импорт стиля</button>
+        <div class="container">
+          <div class="home-top">
+            <div class="home-copy">
+              <div class="eyebrow"><span class="dot"></span>Мой гардероб</div>
+              <h1 class="title">Хей, сегодня ты снова красотка</h1>
+              <p class="subtitle">Здесь живут вещи, готовые образы, палитры и маленькие стилевые подсказки, чтобы не держать весь гардероб в голове.</p>
+            </div>
+            <div class="home-controls">
+              <nav class="nav-card" aria-label="Основная навигация">
+                ${navButton("outfits", "Образы")}
+                ${navButton("items", "Вещи")}
+                ${navButton("palettes", "Палитры")}
+                ${navButton("wishlist", "Покупки")}
+              </nav>
+              <div class="global-actions">
+                <button class="subtle-btn" data-export-all>Экспорт стиля</button>
+                <button class="subtle-btn" data-import-all>Импорт стиля</button>
+              </div>
             </div>
           </div>
-        </header>
+        </div>
         ${content}
       `;
     }
