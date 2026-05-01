@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мой гардероб</title>
+  <meta name="description" content="Личный гардероб, образы, палитры и вещи" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f6f1ea;
+      --card:#fffaf4;
+      --card-strong:#ffffff;
+      --text:#221b17;
+      --muted:#74675d;
+      --line:#eadfd3;
+      --soft:#f0e6da;
+      --soft-2:#ead8c7;
+      --accent:#5a2f26;
+      --accent-2:#7a3f35;
+      --accent-soft:#f5e4df;
+      --green:#2f5d46;
+      --green-soft:#e3eee6;
+      --gold:#9b6b2f;
+      --danger:#a13b2f;
+      --danger-soft:#fff0ed;
+      --shadow:0 14px 36px rgba(57,38,23,.08);
+      --shadow-hover:0 18px 44px rgba(57,38,23,.13);
+    }
+
+    * { box-sizing:border-box; font-family:"Inter Tight",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--text); }
+    body { min-height:100vh; }
+    button, input, textarea, select { font:inherit; }
+    button { cursor:pointer; }
+    h1,h2,h3,p { margin:0; }
+    img { max-width:100%; display:block; }
+    .hidden-input { display:none; }
+    .container { width:min(1180px, calc(100% - 32px)); margin:0 auto; }
+
+    .hero {
+      min-height:238px;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255,255,255,.55) 0 9%, transparent 10%),
+        linear-gradient(135deg, #6c342c 0%, #a66d4f 36%, #dcc3a5 70%, #f4eadb 100%);
+      position:relative;
+      overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,.5);
+    }
+    .hero:after {
+      content:"";
+      position:absolute;
+      inset:auto -8% -38% auto;
+      width:520px;
+      height:520px;
+      border-radius:999px;
+      background:rgba(255,250,244,.44);
+      filter:blur(1px);
+    }
+    .hero-inner {
+      position:relative;
+      z-index:1;
+      padding:32px 0 30px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+    .hero-copy { flex:1 1 560px; max-width:780px; }
+    .eyebrow {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(255,250,244,.88);
+      border:1px solid rgba(255,255,255,.62);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:14px;
+      color:#5b4238;
+      box-shadow:0 10px 28px rgba(57,38,23,.12);
+      backdrop-filter:blur(10px);
+    }
+    .dot { width:10px; height:10px; border-radius:999px; background:#7c2f2f; }
+    .title {
+      margin-top:14px;
+      font-size:clamp(38px,5.4vw,64px);
+      line-height:.96;
+      letter-spacing:-.055em;
+      font-weight:800;
+      color:#fffaf4;
+      text-shadow:0 10px 28px rgba(57,38,23,.22);
+      max-width:860px;
+    }
+    .subtitle {
+      margin-top:14px;
+      max-width:720px;
+      color:rgba(255,250,244,.9);
+      font-size:18px;
+      line-height:1.5;
+    }
+
+    .hero-actions, .actions, .toolbar, .modal-actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .nav-card {
+      background:rgba(255,250,244,.86);
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:26px;
+      padding:10px;
+      box-shadow:0 14px 34px rgba(57,38,23,.12);
+      backdrop-filter:blur(10px);
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .nav-btn, .pill {
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      padding:11px 14px;
+      border-radius:16px;
+      font-weight:800;
+      font-size:14px;
+      transition:.18s ease;
+    }
+    .nav-btn.active, .pill.active { background:var(--accent); color:#fffaf4; }
+    .nav-btn:hover, .pill:hover { background:rgba(90,47,38,.08); color:var(--text); }
+    .nav-btn.active:hover, .pill.active:hover { background:var(--accent); color:#fffaf4; }
+
+    .top-panel {
+      margin:-34px auto 22px;
+      position:relative;
+      z-index:3;
+      background:var(--card);
+      border:1px solid rgba(234,223,211,.92);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .filter-grid {
+      display:grid;
+      grid-template-columns:1.35fr repeat(3, minmax(150px, .72fr));
+      gap:10px;
+      align-items:end;
+    }
+    .field label {
+      display:block;
+      margin-bottom:8px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+    }
+    .field input, .field select, .field textarea {
+      width:100%;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      outline:none;
+      border-radius:17px;
+      padding:13px 14px;
+      font-size:15px;
+      transition:.18s ease;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color:#c8aa92;
+      box-shadow:0 0 0 4px rgba(122,63,53,.08);
+    }
+    .field textarea { min-height:108px; resize:vertical; }
+    .quick-tabs { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+
+    .section-head {
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      margin:26px 0 16px;
+    }
+    .section-title { font-size:30px; font-weight:800; letter-spacing:-.035em; }
+    .section-desc { margin-top:8px; color:var(--muted); line-height:1.45; max-width:680px; }
+
+    .stats-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:22px 0 18px; }
+    .stat-card {
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:17px;
+      box-shadow:var(--shadow);
+    }
+    .stat-card small { display:block; color:var(--muted); font-weight:700; margin-bottom:6px; }
+    .stat-card strong { display:block; font-size:30px; letter-spacing:-.04em; }
+
+    .cards { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; padding-bottom:28px; }
+    .outfit-card, .item-card, .palette-card, .wishlist-card, .panel, .empty-card {
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+    }
+    .outfit-card, .item-card, .palette-card, .wishlist-card {
+      overflow:hidden;
+      transition:.18s ease;
+    }
+    .outfit-card:hover, .item-card:hover, .palette-card:hover, .wishlist-card:hover {
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-hover);
+    }
+    .outfit-card { text-align:left; border:1px solid var(--line); padding:0; color:inherit; }
+    .cover {
+      min-height:210px;
+      position:relative;
+      background:linear-gradient(135deg, #ead8c7, #fff8ef);
+      overflow:hidden;
+    }
+    .cover img { width:100%; height:236px; object-fit:cover; }
+    .cover-placeholder {
+      height:236px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-end;
+      gap:8px;
+      color:#fffaf4;
+      position:relative;
+      isolation:isolate;
+    }
+    .cover-placeholder:before {
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-2;
+      background:var(--tone, linear-gradient(135deg, #7a3f35, #d7b48f));
+    }
+    .cover-placeholder:after {
+      content:"";
+      position:absolute;
+      inset:18px;
+      z-index:-1;
+      border:1px solid rgba(255,250,244,.38);
+      border-radius:24px;
+    }
+    .cover-emoji { font-size:42px; filter:drop-shadow(0 8px 18px rgba(34,27,23,.2)); }
+    .cover-text { max-width:230px; font-size:15px; line-height:1.35; color:rgba(255,250,244,.88); }
+    .favorite-btn {
+      position:absolute;
+      top:14px;
+      right:14px;
+      width:42px;
+      height:42px;
+      border:1px solid rgba(255,255,255,.62);
+      background:rgba(255,250,244,.84);
+      color:#8a5849;
+      border-radius:16px;
+      font-size:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 12px 28px rgba(57,38,23,.14);
+      backdrop-filter:blur(10px);
+      transition:.18s ease;
+      z-index:2;
+    }
+    .favorite-btn.active { background:#7c2f2f; color:#fffaf4; }
+    .favorite-btn:hover { transform:scale(1.04); }
+    .card-body { padding:18px; }
+    .badge-row, .chip-row { display:flex; flex-wrap:wrap; gap:7px; }
+    .badge, .chip {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      border-radius:999px;
+      padding:7px 11px;
+      font-size:13px;
+      font-weight:800;
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--muted);
+    }
+    .badge.good { background:var(--green-soft); color:var(--green); border-color:#cadccc; }
+    .badge.warm { background:#fff1dd; color:#895a20; border-color:#f0d7b4; }
+    .badge.try { background:#f1e8ff; color:#6d4993; border-color:#decdf4; }
+    .card-title {
+      margin-top:12px;
+      font-size:23px;
+      font-weight:800;
+      letter-spacing:-.03em;
+      line-height:1.06;
+    }
+    .card-text { margin-top:9px; color:var(--muted); line-height:1.45; font-size:15px; }
+    .palette-dots { display:flex; gap:7px; margin-top:14px; }
+    .color-dot { width:24px; height:24px; border-radius:999px; border:2px solid rgba(255,250,244,.88); box-shadow:0 0 0 1px rgba(34,27,23,.1); }
+
+    .empty-card { padding:42px 24px; text-align:center; color:var(--muted); grid-column:1/-1; }
+    .empty-card strong { display:block; color:var(--text); font-size:22px; margin-bottom:8px; }
+
+    .primary-btn, .subtle-btn, .ghost-btn, .danger-btn, .small-btn {
+      border:0;
+      border-radius:17px;
+      padding:12px 16px;
+      font-size:15px;
+      font-weight:800;
+      transition:.18s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+    .primary-btn { background:var(--accent); color:#fffaf4; }
+    .subtle-btn, .ghost-btn { background:#fff; color:var(--text); border:1px solid var(--line); }
+    .danger-btn { background:var(--danger-soft); color:var(--danger); border:1px solid #f1c8c0; }
+    .small-btn { padding:9px 11px; font-size:13px; border:1px solid var(--line); background:#fff; color:var(--text); border-radius:14px; }
+    .primary-btn:hover, .subtle-btn:hover, .ghost-btn:hover, .danger-btn:hover, .small-btn:hover { transform:translateY(-1px); opacity:.96; }
+
+    .items-layout { display:grid; grid-template-columns:260px 1fr; gap:18px; align-items:start; padding-bottom:34px; }
+    .side-panel { position:sticky; top:14px; }
+    .panel { padding:20px; }
+    .panel-title { font-size:22px; font-weight:800; letter-spacing:-.025em; }
+    .panel-desc { margin-top:8px; color:var(--muted); line-height:1.45; }
+    .category-list { display:grid; gap:8px; margin-top:16px; }
+    .category-filter {
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      border-radius:17px;
+      padding:11px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      text-align:left;
+      font-weight:800;
+    }
+    .category-filter.active { background:var(--accent); color:#fffaf4; border-color:var(--accent); }
+    .item-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .item-card { padding:14px; }
+    .item-photo {
+      height:176px;
+      border-radius:22px;
+      overflow:hidden;
+      background:linear-gradient(135deg, #efe1d3, #fff7ed);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .item-photo img { width:100%; height:100%; object-fit:cover; }
+    .item-emoji { font-size:38px; }
+    .item-name { margin-top:12px; font-size:18px; font-weight:800; letter-spacing:-.02em; }
+    .item-meta { margin-top:5px; color:var(--muted); font-size:14px; line-height:1.35; }
+    .item-actions { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+    .usage-line { margin-top:10px; display:flex; justify-content:space-between; gap:8px; align-items:center; font-size:13px; color:var(--muted); }
+    .usage-count { font-weight:800; color:var(--green); }
+
+    .detail-wrap { padding:28px 0 40px; }
+    .back { border:0; background:transparent; color:var(--muted); font-size:15px; font-weight:800; padding:8px 0; margin-bottom:12px; }
+    .detail-grid { display:grid; grid-template-columns:minmax(300px, .9fr) 1.25fr; gap:20px; align-items:start; }
+    .detail-cover { padding:14px; }
+    .large-cover {
+      border-radius:24px;
+      min-height:460px;
+      overflow:hidden;
+      background:linear-gradient(135deg, #ead8c7, #fff8ef);
+      position:relative;
+    }
+    .large-cover img { width:100%; height:460px; object-fit:cover; }
+    .large-cover .cover-placeholder { height:460px; }
+    .detail-main { padding:24px; }
+    .detail-title { font-size:clamp(34px,4vw,52px); line-height:.98; letter-spacing:-.055em; font-weight:800; }
+    .detail-desc { margin-top:14px; color:var(--muted); font-size:17px; line-height:1.5; }
+    .meta-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:18px; }
+    .meta-card { background:#fff; border:1px solid var(--line); border-radius:20px; padding:15px; }
+    .meta-card small { display:block; color:var(--muted); margin-bottom:7px; font-weight:800; }
+    .meta-card strong { display:block; font-size:18px; line-height:1.25; }
+    .detail-section { margin-top:22px; }
+    .detail-section h3 { font-size:22px; letter-spacing:-.02em; }
+    .mini-items { display:grid; gap:10px; margin-top:12px; }
+    .mini-item { display:flex; gap:12px; align-items:center; background:#fff; border:1px solid var(--line); border-radius:20px; padding:12px; }
+    .mini-thumb { width:58px; height:58px; border-radius:16px; background:var(--soft); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+    .mini-thumb img { width:100%; height:100%; object-fit:cover; }
+    .mini-name { font-weight:800; }
+    .mini-note { margin-top:3px; color:var(--muted); font-size:14px; }
+    .upload-strip { margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; }
+
+    .palette-grid, .wishlist-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding-bottom:34px; }
+    .palette-card, .wishlist-card { padding:18px; }
+    .palette-name, .wishlist-name { font-size:22px; font-weight:800; letter-spacing:-.025em; }
+    .palette-desc, .wishlist-desc { margin-top:9px; color:var(--muted); line-height:1.45; }
+    .swatches { display:flex; gap:8px; margin:16px 0 14px; }
+    .swatch { height:42px; flex:1; border-radius:14px; border:1px solid rgba(34,27,23,.08); }
+
+    .modal.hidden { display:none; }
+    .modal {
+      position:fixed;
+      inset:0;
+      z-index:50;
+      background:rgba(34,27,23,.48);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      overflow:auto;
+    }
+    .modal-card {
+      width:min(760px, 100%);
+      max-height:min(92vh, 980px);
+      overflow:auto;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.6);
+      border-radius:30px;
+      padding:22px;
+      box-shadow:0 30px 80px rgba(34,27,23,.26);
+    }
+    .modal-title { font-size:34px; letter-spacing:-.04em; line-height:1; font-weight:800; }
+    .modal-desc { margin-top:10px; color:var(--muted); line-height:1.45; }
+    .form { margin-top:18px; display:grid; gap:14px; }
+    .two-cols { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .three-cols { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+    .image-picker {
+      min-height:164px;
+      border:1px dashed #cfb9a5;
+      background:#fff7ef;
+      border-radius:22px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:var(--muted);
+      overflow:hidden;
+    }
+    .image-picker img { width:100%; max-height:240px; object-fit:cover; border-radius:18px; }
+    .image-picker strong { display:block; color:var(--text); margin-bottom:6px; }
+    .checklist-box {
+      max-height:250px;
+      overflow:auto;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:8px;
+      padding:10px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+    }
+    .check-item {
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:10px;
+      font-size:14px;
+      color:var(--muted);
+      background:#fffaf4;
+    }
+    .check-item input { margin-top:3px; accent-color:var(--accent); }
+    .check-item strong { color:var(--text); }
+    .modal-actions { justify-content:flex-end; margin-top:18px; }
+    .hint { margin-top:12px; color:var(--muted); font-size:13px; line-height:1.4; }
+
+    @media (max-width:1040px) {
+      .cards, .item-grid, .palette-grid, .wishlist-grid { grid-template-columns:repeat(2,1fr); }
+      .filter-grid { grid-template-columns:1fr 1fr; }
+      .stats-grid { grid-template-columns:repeat(2,1fr); }
+      .detail-grid, .items-layout { grid-template-columns:1fr; }
+      .side-panel { position:static; }
+    }
+    @media (max-width:680px) {
+      .container { width:min(100% - 20px, 1180px); }
+      .hero { min-height:260px; }
+      .hero-inner { padding:24px 0 42px; }
+      .title { font-size:42px; }
+      .subtitle { font-size:16px; }
+      .nav-card, .hero-actions, .actions, .toolbar, .modal-actions, .quick-tabs { width:100%; }
+      .nav-btn, .pill, .primary-btn, .subtle-btn, .ghost-btn, .danger-btn { flex:1 1 100%; width:100%; }
+      .top-panel { margin-top:-28px; border-radius:26px; }
+      .filter-grid, .cards, .item-grid, .palette-grid, .wishlist-grid, .stats-grid, .two-cols, .three-cols, .meta-grid, .checklist-box { grid-template-columns:1fr; }
+      .cover, .cover img, .cover-placeholder { min-height:230px; height:230px; }
+      .large-cover, .large-cover img, .large-cover .cover-placeholder { min-height:380px; height:380px; }
+      .modal-card, .panel, .outfit-card, .item-card, .palette-card, .wishlist-card { border-radius:24px; }
+      .modal-actions { flex-direction:column-reverse; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <input id="importFileInput" class="hidden-input" type="file" accept=".json,application/json">
+
+  <div id="itemModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle">
+      <h2 id="itemModalTitle" class="modal-title">Добавить вещь</h2>
+      <p class="modal-desc">Заполни карточку вещи: фото можно добавить сразу или позже. Теги вводятся через запятую.</p>
+
+      <div class="form">
+        <label class="image-picker" for="itemPhotoInput" id="itemPhotoPreview">
+          <div><strong>Фото вещи</strong><span>Нажми, чтобы загрузить изображение</span></div>
+        </label>
+        <input id="itemPhotoInput" class="hidden-input" type="file" accept="image/*">
+
+        <div class="two-cols">
+          <div class="field">
+            <label for="itemNameInput">Название</label>
+            <input id="itemNameInput" type="text" placeholder="Например, бордовый кардиган">
+          </div>
+          <div class="field">
+            <label for="itemCategoryInput">Категория</label>
+            <select id="itemCategoryInput"></select>
+          </div>
+        </div>
+
+        <div class="two-cols">
+          <div class="field">
+            <label for="itemColorsInput">Цвета</label>
+            <input id="itemColorsInput" type="text" placeholder="бордо, коричневый">
+          </div>
+          <div class="field">
+            <label for="itemStatusInput">Статус</label>
+            <select id="itemStatusInput"></select>
+          </div>
+        </div>
+
+        <div class="three-cols">
+          <div class="field">
+            <label for="itemWeatherInput">Погода</label>
+            <input id="itemWeatherInput" type="text" placeholder="прохладно, холодно">
+          </div>
+          <div class="field">
+            <label for="itemMoodsInput">Настроения</label>
+            <input id="itemMoodsInput" type="text" placeholder="уютно, собранно">
+          </div>
+          <div class="field">
+            <label for="itemStylesInput">Стили</label>
+            <input id="itemStylesInput" type="text" placeholder="old money, preppy">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="itemNotesInput">Комментарий</label>
+          <textarea id="itemNotesInput" placeholder="С чем носить, что важно помнить, почему вещь нравится"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="ghost-btn" data-close-modal="item">Отмена</button>
+        <button class="primary-btn" data-save-item>Сохранить вещь</button>
+      </div>
+      <p class="hint">Вещи сохраняются локально в браузере. Чтобы не потерять данные, периодически экспортируй JSON.</p>
+    </div>
+  </div>
+
+  <div id="outfitModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="outfitModalTitle">
+      <h2 id="outfitModalTitle" class="modal-title">Добавить образ</h2>
+      <p class="modal-desc">Собери образ из вещей, добавь фото, настроение, погоду и палитру. Потом его можно будет найти через фильтры.</p>
+
+      <div class="form">
+        <label class="image-picker" for="outfitPhotoInput" id="outfitPhotoPreview">
+          <div><strong>Фото образа</strong><span>Нажми, чтобы загрузить изображение</span></div>
+        </label>
+        <input id="outfitPhotoInput" class="hidden-input" type="file" accept="image/*">
+
+        <div class="two-cols">
+          <div class="field">
+            <label for="outfitTitleInput">Название</label>
+            <input id="outfitTitleInput" type="text" placeholder="Например, бордовый кардиган и Mary Jane">
+          </div>
+          <div class="field">
+            <label for="outfitStatusInput">Статус</label>
+            <select id="outfitStatusInput"></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="outfitDescInput">Описание</label>
+          <textarea id="outfitDescInput" placeholder="Для какого состояния, места или дня этот образ"></textarea>
+        </div>
+
+        <div class="three-cols">
+          <div class="field">
+            <label for="outfitColorsInput">Палитра</label>
+            <input id="outfitColorsInput" type="text" placeholder="бордо, молочный, коричневый">
+          </div>
+          <div class="field">
+            <label for="outfitWeatherInput">Погода</label>
+            <input id="outfitWeatherInput" type="text" placeholder="прохладно, ветер">
+          </div>
+          <div class="field">
+            <label for="outfitMoodsInput">Настроение</label>
+            <input id="outfitMoodsInput" type="text" placeholder="уютно, собранно">
+          </div>
+        </div>
+
+        <div class="three-cols">
+          <div class="field">
+            <label for="outfitOccasionsInput">Поводы</label>
+            <input id="outfitOccasionsInput" type="text" placeholder="прогулка, кафе">
+          </div>
+          <div class="field">
+            <label for="outfitStylesInput">Стили</label>
+            <input id="outfitStylesInput" type="text" placeholder="old money, preppy">
+          </div>
+          <div class="field">
+            <label for="outfitTempsInput">Температура</label>
+            <input id="outfitTempsInput" type="text" placeholder="8–16°C">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Вещи в образе</label>
+          <div id="outfitItemsChecklist" class="checklist-box"></div>
+        </div>
+
+        <div class="field">
+          <label for="outfitNotesInput">Заметки</label>
+          <textarea id="outfitNotesInput" placeholder="Что добавить, что заменить, как чувствовала себя в этом образе"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="ghost-btn" data-close-modal="outfit">Отмена</button>
+        <button class="primary-btn" data-save-outfit>Сохранить образ</button>
+      </div>
+      <p class="hint">Любимые образы можно отмечать сердечком — они появятся во вкладке «Любимые».</p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "polina-wardrobe-v1";
+
+    const CATEGORY_META = {
+      outerwear: { icon: "🧥", title: "Верхняя одежда" },
+      knitwear: { icon: "🧶", title: "Трикотаж" },
+      tops: { icon: "👔", title: "Рубашки и верх" },
+      bottoms: { icon: "👖", title: "Низ" },
+      dresses: { icon: "👗", title: "Платья" },
+      shoes: { icon: "👞", title: "Обувь" },
+      bags: { icon: "👜", title: "Сумки" },
+      jewelry: { icon: "✨", title: "Украшения" },
+      accessories: { icon: "🧣", title: "Аксессуары" },
+      home: { icon: "🕯️", title: "Домашнее" },
+      special: { icon: "🪆", title: "Русская деталь" }
+    };
+
+    const ITEM_STATUSES = [
+      "люблю и ношу",
+      "база",
+      "редко ношу",
+      "не знаю как стилизовать",
+      "оставить на тест",
+      "требует ремонта",
+      "продать",
+      "отдать"
+    ];
+
+    const OUTFIT_STATUSES = ["готовый образ", "любимый", "хочу попробовать", "на сегодня", "для фото", "на доработку"];
+
+    const COLOR_MAP = {
+      "бордо": "#7c2f2f",
+      "коричневый": "#6b4636",
+      "бежевый": "#d5b895",
+      "молочный": "#f6eadb",
+      "зелёный": "#365f49",
+      "зеленый": "#365f49",
+      "тёмно-синий": "#24334d",
+      "темно-синий": "#24334d",
+      "синий": "#2c4266",
+      "серый": "#9a9893",
+      "чёрный": "#1e1c1a",
+      "черный": "#1e1c1a",
+      "золото": "#b98a3f",
+      "красный": "#a7342f",
+      "кремовый": "#ead7bd",
+      "джинсовый": "#637f9f",
+      "оливковый": "#687246",
+      "белый": "#fffaf4"
+    };
+
+    const TONES = [
+      "linear-gradient(135deg, #79352e 0%, #c08a66 54%, #ead8c7 100%)",
+      "linear-gradient(135deg, #314f3e 0%, #9a8b5f 52%, #f0dfc4 100%)",
+      "linear-gradient(135deg, #2d3858 0%, #8a6e62 56%, #f4e5d6 100%)",
+      "linear-gradient(135deg, #6b4636 0%, #c8a277 58%, #fff5e8 100%)",
+      "linear-gradient(135deg, #8a2f2a 0%, #9d6b4c 48%, #e4c8a6 100%)"
+    ];
+
+    const DEFAULT_DATA = {
+      items: [
+        {
+          id: "item-burgundy-cardigan",
+          name: "Бордовый кардиган",
+          category: "knitwear",
+          colors: ["бордо"],
+          weather: ["прохладно", "холодно"],
+          moods: ["уютно", "собранно", "винтажно"],
+          styles: ["casual old money", "уютная классика"],
+          status: "люблю и ношу",
+          notes: "Главная уютная вещь. Хорошо с молочной рубашкой, джинсами, коричневой сумкой и золотыми украшениями.",
+          photo: null
+        },
+        {
+          id: "item-milk-shirt",
+          name: "Молочная рубашка с воротничком",
+          category: "tops",
+          colors: ["молочный"],
+          weather: ["тепло", "прохладно"],
+          moods: ["собранно", "интеллектуально", "preppy"],
+          styles: ["preppy", "old money"],
+          status: "база",
+          notes: "Основа для многослойности: под кардиган, жакет, жилет или сама по себе.",
+          photo: null
+        },
+        {
+          id: "item-blue-jeans",
+          name: "Прямые синие джинсы",
+          category: "bottoms",
+          colors: ["джинсовый", "синий"],
+          weather: ["тепло", "прохладно", "холодно"],
+          moods: ["спокойно", "повседневно"],
+          styles: ["casual", "old money"],
+          status: "база",
+          notes: "Нужны как спокойный низ почти ко всему.",
+          photo: null
+        },
+        {
+          id: "item-mary-jane-brown",
+          name: "Коричневые Mary Jane",
+          category: "shoes",
+          colors: ["коричневый"],
+          weather: ["тепло", "прохладно"],
+          moods: ["женственно", "винтажно"],
+          styles: ["preppy", "винтажная классика"],
+          status: "люблю и ношу",
+          notes: "Дают образу аккуратность и немного ретро-настроения.",
+          photo: null
+        },
+        {
+          id: "item-gold-earrings",
+          name: "Золотые серьги",
+          category: "jewelry",
+          colors: ["золото"],
+          weather: ["любая"],
+          moods: ["собранно", "нарядно"],
+          styles: ["old money", "мягкая классика"],
+          status: "люблю и ношу",
+          notes: "Добавляют ощущение законченности даже простому образу.",
+          photo: null
+        },
+        {
+          id: "item-green-skirt",
+          name: "Тёмно-зелёная юбка",
+          category: "bottoms",
+          colors: ["зелёный"],
+          weather: ["прохладно", "холодно"],
+          moods: ["женственно", "спокойно"],
+          styles: ["уютная классика", "old money"],
+          status: "не знаю как стилизовать",
+          notes: "Пока вещь-сирота: хочется придумать с ней 2–3 понятных сочетания.",
+          photo: null
+        },
+        {
+          id: "item-beige-trench",
+          name: "Бежевый тренч",
+          category: "outerwear",
+          colors: ["бежевый"],
+          weather: ["ветер", "прохладно", "дождь"],
+          moods: ["собранно", "городская классика"],
+          styles: ["old money", "минимализм"],
+          status: "база",
+          notes: "Очень связывает гардероб, особенно с коричневой обувью и сумкой.",
+          photo: null
+        },
+        {
+          id: "item-brown-loafers",
+          name: "Коричневые лоферы",
+          category: "shoes",
+          colors: ["коричневый"],
+          weather: ["тепло", "прохладно"],
+          moods: ["собранно", "preppy"],
+          styles: ["old money", "preppy"],
+          status: "база",
+          notes: "Для образов, где Mary Jane кажутся слишком нежными.",
+          photo: null
+        },
+        {
+          id: "item-red-scarf",
+          name: "Платок с красным акцентом",
+          category: "special",
+          colors: ["красный", "молочный"],
+          weather: ["тепло", "прохладно"],
+          moods: ["русская деталь", "винтажно"],
+          styles: ["русская деталь", "уютная классика"],
+          status: "люблю и ношу",
+          notes: "Мягкий способ добавить русскую идентичность без костюмности.",
+          photo: null
+        },
+        {
+          id: "item-linen-blouse",
+          name: "Льняная блуза",
+          category: "tops",
+          colors: ["молочный", "бежевый"],
+          weather: ["тепло"],
+          moods: ["природно", "спокойно", "русская деталь"],
+          styles: ["натуральная классика", "русская деталь"],
+          status: "оставить на тест",
+          notes: "Можно носить с юбкой, джинсами и золотыми серьгами.",
+          photo: null
+        },
+        {
+          id: "item-brown-bag",
+          name: "Структурная коричневая сумка",
+          category: "bags",
+          colors: ["коричневый"],
+          weather: ["любая"],
+          moods: ["собранно", "дорого"],
+          styles: ["old money", "городская классика"],
+          status: "база",
+          notes: "Делает даже простой образ более собранным.",
+          photo: null
+        },
+        {
+          id: "item-kapor",
+          name: "Вязаный кокошник-капор",
+          category: "special",
+          colors: ["молочный", "бежевый"],
+          weather: ["холодно", "ветер"],
+          moods: ["уютно", "русская деталь"],
+          styles: ["русская деталь", "уютная классика"],
+          status: "люблю и ношу",
+          notes: "Тёплая русская деталь, которая не выглядит как костюм.",
+          photo: null
+        }
+      ],
+      outfits: [
+        {
+          id: "outfit-burgundy-classic",
+          title: "Бордовый кардиган и Mary Jane",
+          description: "Уютный, собранный образ на обычный день, кафе или прогулку. Самое то, когда хочется выглядеть мягко, но не случайно.",
+          itemIds: ["item-burgundy-cardigan", "item-milk-shirt", "item-blue-jeans", "item-mary-jane-brown", "item-gold-earrings", "item-brown-bag"],
+          colors: ["бордо", "молочный", "коричневый", "джинсовый"],
+          weather: ["прохладно"],
+          moods: ["уютно", "собранно", "винтажно"],
+          occasions: ["прогулка", "кафе", "обычный день"],
+          styles: ["casual old money", "preppy"],
+          temp: "8–16°C",
+          favorite: true,
+          status: "любимый",
+          russianDetail: false,
+          toneIndex: 0,
+          photo: null,
+          notes: "Можно заменить Mary Jane на лоферы, если нужен более строгий вариант."
+        },
+        {
+          id: "outfit-trench-city",
+          title: "Тренч, рубашка и лоферы",
+          description: "Городская база в духе спокойной классики: подходит для встреч, прогулок и дней, когда хочется выглядеть взрослой и собранной.",
+          itemIds: ["item-beige-trench", "item-milk-shirt", "item-blue-jeans", "item-brown-loafers", "item-brown-bag", "item-gold-earrings"],
+          colors: ["бежевый", "молочный", "коричневый", "джинсовый"],
+          weather: ["прохладно", "ветер"],
+          moods: ["собранно", "городская классика"],
+          occasions: ["встреча", "прогулка", "дела"],
+          styles: ["old money", "минимализм"],
+          temp: "10–18°C",
+          favorite: true,
+          status: "готовый образ",
+          russianDetail: false,
+          toneIndex: 3,
+          photo: null,
+          notes: "Если холоднее — добавить кардиган."
+        },
+        {
+          id: "outfit-russian-detail",
+          title: "Платок с красным акцентом",
+          description: "Образ с русской деталью без костюмности: спокойная база, золото и маленький красный акцент через платок.",
+          itemIds: ["item-linen-blouse", "item-blue-jeans", "item-red-scarf", "item-gold-earrings", "item-mary-jane-brown"],
+          colors: ["молочный", "красный", "коричневый", "джинсовый"],
+          weather: ["тепло", "прохладно"],
+          moods: ["русская деталь", "женственно", "спокойно"],
+          occasions: ["музей", "кафе", "фото-день"],
+          styles: ["русская деталь", "винтажная классика"],
+          temp: "14–22°C",
+          favorite: false,
+          status: "хочу попробовать",
+          russianDetail: true,
+          toneIndex: 4,
+          photo: null,
+          notes: "Важно оставить остальной образ спокойным, чтобы деталь выглядела тонко."
+        },
+        {
+          id: "outfit-cold-kapor",
+          title: "Капор, тренч и тёплый трикотаж",
+          description: "Для ветра и холодного дня: уютный слой, мягкая русская отсылка и спокойная тёплая палитра.",
+          itemIds: ["item-kapor", "item-burgundy-cardigan", "item-beige-trench", "item-blue-jeans", "item-brown-loafers", "item-brown-bag"],
+          colors: ["бордо", "бежевый", "молочный", "коричневый"],
+          weather: ["холодно", "ветер"],
+          moods: ["уютно", "русская деталь"],
+          occasions: ["прогулка", "поездка", "холодный день"],
+          styles: ["уютная классика", "русская деталь"],
+          temp: "0–9°C",
+          favorite: true,
+          status: "на сегодня",
+          russianDetail: true,
+          toneIndex: 1,
+          photo: null,
+          notes: "Если хочется меньше акцента — заменить капор на обычный шарф."
+        },
+        {
+          id: "outfit-green-skirt-test",
+          title: "Тест с зелёной юбкой",
+          description: "Черновик образа для вещи, которую пока сложно стилизовать. Нужно проверить, комфортно ли с молочной рубашкой и коричневыми деталями.",
+          itemIds: ["item-green-skirt", "item-milk-shirt", "item-brown-loafers", "item-gold-earrings", "item-brown-bag"],
+          colors: ["зелёный", "молочный", "коричневый", "золото"],
+          weather: ["прохладно"],
+          moods: ["женственно", "спокойно"],
+          occasions: ["кафе", "музей", "обычный день"],
+          styles: ["old money", "уютная классика"],
+          temp: "10–17°C",
+          favorite: false,
+          status: "хочу попробовать",
+          russianDetail: false,
+          toneIndex: 1,
+          photo: null,
+          notes: "Если не сработает, попробовать с бордовым кардиганом."
+        }
+      ],
+      palettes: [
+        {
+          id: "palette-warm-classic",
+          name: "Тёплая классика",
+          colors: ["молочный", "бежевый", "коричневый", "золото"],
+          description: "Спокойная база для old money, preppy и городских образов."
+        },
+        {
+          id: "palette-burgundy-autumn",
+          name: "Бордо и осень",
+          colors: ["бордо", "коричневый", "зелёный", "молочный"],
+          description: "Уютная винтажная палитра для кардиганов, трикотажа и прогулок."
+        },
+        {
+          id: "palette-russian-detail",
+          name: "Русская деталь",
+          colors: ["молочный", "красный", "бежевый", "золото"],
+          description: "Красный акцент, лён, платок, золото — тонко, без костюмности."
+        }
+      ],
+      wishlist: [
+        {
+          id: "wish-brown-belt",
+          name: "Коричневый ремень",
+          reason: "Связать джинсы, рубашки, лоферы и сумку в более собранные образы.",
+          priority: "средний"
+        },
+        {
+          id: "wish-wool-skirt",
+          name: "Тёплая шерстяная юбка",
+          reason: "Добавить женственный низ на холодный сезон в old money / preppy стилистике.",
+          priority: "подумать 2 недели"
+        }
+      ]
+    };
+
+    const state = {
+      data: loadData(),
+      page: "outfits",
+      selectedOutfitId: null,
+      filters: {
+        tab: "all",
+        search: "",
+        weather: "",
+        color: "",
+        mood: "",
+        itemCategory: "all"
+      },
+      itemModalOpen: false,
+      outfitModalOpen: false,
+      editingItemId: null,
+      editingOutfitId: null,
+      itemPhotoDraft: null,
+      outfitPhotoDraft: null
+    };
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function loadData() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return clone(DEFAULT_DATA);
+        return normalizeData(JSON.parse(saved));
+      } catch (error) {
+        return clone(DEFAULT_DATA);
+      }
+    }
+
+    function normalizeData(data) {
+      return {
+        items: Array.isArray(data.items) ? data.items : clone(DEFAULT_DATA.items),
+        outfits: Array.isArray(data.outfits) ? data.outfits : clone(DEFAULT_DATA.outfits),
+        palettes: Array.isArray(data.palettes) ? data.palettes : clone(DEFAULT_DATA.palettes),
+        wishlist: Array.isArray(data.wishlist) ? data.wishlist : clone(DEFAULT_DATA.wishlist)
+      };
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function splitTags(value) {
+      return String(value || "")
+        .split(",")
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+    }
+
+    function joinTags(tags) {
+      return Array.isArray(tags) ? tags.join(", ") : "";
+    }
+
+    function unique(values) {
+      return [...new Set(values.filter(Boolean))];
+    }
+
+    function createId(prefix) {
+      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function getItemById(id) {
+      return state.data.items.find((item) => item.id === id);
+    }
+
+    function getOutfitById(id) {
+      return state.data.outfits.find((outfit) => outfit.id === id);
+    }
+
+    function getItemsForOutfit(outfit) {
+      return (outfit.itemIds || []).map(getItemById).filter(Boolean);
+    }
+
+    function getItemUsageCount(itemId) {
+      return state.data.outfits.filter((outfit) => (outfit.itemIds || []).includes(itemId)).length;
+    }
+
+    function getOrphanItems() {
+      return state.data.items.filter((item) => getItemUsageCount(item.id) === 0);
+    }
+
+    function getUnsureItems() {
+      return state.data.items.filter((item) => item.status === "не знаю как стилизовать");
+    }
+
+    function allColors() {
+      return unique([
+        ...state.data.items.flatMap((item) => item.colors || []),
+        ...state.data.outfits.flatMap((outfit) => outfit.colors || [])
+      ]).sort((a,b) => a.localeCompare(b, "ru"));
+    }
+
+    function allWeather() {
+      return unique([
+        ...state.data.items.flatMap((item) => item.weather || []),
+        ...state.data.outfits.flatMap((outfit) => outfit.weather || [])
+      ]).sort((a,b) => a.localeCompare(b, "ru"));
+    }
+
+    function allMoods() {
+      return unique([
+        ...state.data.items.flatMap((item) => item.moods || []),
+        ...state.data.outfits.flatMap((outfit) => outfit.moods || [])
+      ]).sort((a,b) => a.localeCompare(b, "ru"));
+    }
+
+    function colorValue(color) {
+      return COLOR_MAP[String(color || "").toLowerCase()] || "#d8c4ad";
+    }
+
+    function toneFor(outfit) {
+      return TONES[outfit.toneIndex % TONES.length] || TONES[0];
+    }
+
+    function renderLayout(content) {
+      return `
+        <header class="hero">
+          <div class="container hero-inner">
+            <div class="hero-copy">
+              <div class="eyebrow"><span class="dot"></span>Мой гардероб</div>
+              <h1 class="title">Хей, сегодня ты снова красотка</h1>
+              <p class="subtitle">Здесь живут вещи, готовые образы, палитры и маленькие стилевые подсказки, чтобы не держать весь гардероб в голове.</p>
+            </div>
+            <nav class="nav-card" aria-label="Основная навигация">
+              ${navButton("outfits", "Образы")}
+              ${navButton("items", "Вещи")}
+              ${navButton("palettes", "Палитры")}
+              ${navButton("wishlist", "Покупки")}
+            </nav>
+          </div>
+        </header>
+        ${content}
+      `;
+    }
+
+    function navButton(page, label) {
+      return `<button class="nav-btn ${state.page === page ? "active" : ""}" data-nav="${page}">${label}</button>`;
+    }
+
+    function renderFilters() {
+      const colorOptions = allColors().map((color) => `<option value="${escapeHtml(color)}" ${state.filters.color === color ? "selected" : ""}>${escapeHtml(color)}</option>`).join("");
+      const weatherOptions = allWeather().map((weather) => `<option value="${escapeHtml(weather)}" ${state.filters.weather === weather ? "selected" : ""}>${escapeHtml(weather)}</option>`).join("");
+      const moodOptions = allMoods().map((mood) => `<option value="${escapeHtml(mood)}" ${state.filters.mood === mood ? "selected" : ""}>${escapeHtml(mood)}</option>`).join("");
+
+      return `
+        <section class="container top-panel">
+          <div class="filter-grid">
+            <div class="field">
+              <label for="searchInput">Поиск</label>
+              <input id="searchInput" type="search" placeholder="Кардиган, бордо, кафе, русская деталь..." value="${escapeHtml(state.filters.search)}" data-filter-search>
+            </div>
+            <div class="field">
+              <label for="weatherFilter">Погода</label>
+              <select id="weatherFilter" data-filter-select="weather">
+                <option value="">Любая</option>${weatherOptions}
+              </select>
+            </div>
+            <div class="field">
+              <label for="colorFilter">Палитра</label>
+              <select id="colorFilter" data-filter-select="color">
+                <option value="">Любая</option>${colorOptions}
+              </select>
+            </div>
+            <div class="field">
+              <label for="moodFilter">Настроение</label>
+              <select id="moodFilter" data-filter-select="mood">
+                <option value="">Любое</option>${moodOptions}
+              </select>
+            </div>
+          </div>
+          <div class="quick-tabs">
+            ${tabButton("all", "Все образы")}
+            ${tabButton("favorites", "♥ Любимые")}
+            ${tabButton("today", "На сегодня")}
+            ${tabButton("try", "Хочу попробовать")}
+            ${tabButton("russian", "Русская деталь")}
+          </div>
+        </section>
+      `;
+    }
+
+    function tabButton(tab, label) {
+      return `<button class="pill ${state.filters.tab === tab ? "active" : ""}" data-tab="${tab}">${label}</button>`;
+    }
+
+    function matchesOutfit(outfit) {
+      const { tab, search, weather, color, mood } = state.filters;
+
+      if (tab === "favorites" && !outfit.favorite) return false;
+      if (tab === "today" && outfit.status !== "на сегодня") return false;
+      if (tab === "try" && outfit.status !== "хочу попробовать") return false;
+      if (tab === "russian" && !outfit.russianDetail && !(outfit.moods || []).includes("русская деталь") && !(outfit.styles || []).includes("русская деталь")) return false;
+
+      if (weather && !(outfit.weather || []).includes(weather)) return false;
+      if (color && !(outfit.colors || []).includes(color)) return false;
+      if (mood && !(outfit.moods || []).includes(mood)) return false;
+
+      if (search.trim()) {
+        const q = search.trim().toLowerCase();
+        const itemNames = getItemsForOutfit(outfit).map((item) => item.name).join(" ");
+        const haystack = [
+          outfit.title,
+          outfit.description,
+          outfit.notes,
+          outfit.status,
+          ...(outfit.colors || []),
+          ...(outfit.weather || []),
+          ...(outfit.moods || []),
+          ...(outfit.occasions || []),
+          ...(outfit.styles || []),
+          itemNames
+        ].join(" ").toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+
+      return true;
+    }
+
+    function filteredOutfits() {
+      return state.data.outfits.filter(matchesOutfit);
+    }
+
+    function renderOutfitsPage() {
+      const outfits = filteredOutfits();
+      const cards = outfits.length
+        ? outfits.map(renderOutfitCard).join("")
+        : `<div class="empty-card"><strong>Пока нет образов под эти фильтры</strong>Попробуй убрать один из фильтров или добавь новый образ.</div>`;
+
+      const content = `
+        ${renderFilters()}
+        <main class="container">
+          ${renderStats()}
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Готовые образы</h2>
+              <p class="section-desc">Фильтруй по погоде, палитре, настроению и отмечай любимые сердечком.</p>
+            </div>
+            <div class="actions">
+              <button class="primary-btn" data-open-outfit-modal>+ Добавить образ</button>
+              <button class="subtle-btn" data-export-all>Экспорт JSON</button>
+              <button class="subtle-btn" data-import-all>Импорт JSON</button>
+            </div>
+          </div>
+          <section class="cards">${cards}</section>
+        </main>
+      `;
+      return renderLayout(content);
+    }
+
+    function renderStats() {
+      return `
+        <section class="stats-grid" aria-label="Статистика гардероба">
+          <div class="stat-card"><small>Образов</small><strong>${state.data.outfits.length}</strong></div>
+          <div class="stat-card"><small>Вещей</small><strong>${state.data.items.length}</strong></div>
+          <div class="stat-card"><small>Любимых образов</small><strong>${state.data.outfits.filter((outfit) => outfit.favorite).length}</strong></div>
+          <div class="stat-card"><small>Вещей без образов</small><strong>${getOrphanItems().length}</strong></div>
+        </section>
+      `;
+    }
+
+    function renderOutfitCard(outfit) {
+      const items = getItemsForOutfit(outfit);
+      const badges = [outfit.status, outfit.temp, ...(outfit.weather || []).slice(0,1)].filter(Boolean);
+      return `
+        <article class="outfit-card" data-open-outfit="${escapeHtml(outfit.id)}">
+          <div class="cover">
+            <button class="favorite-btn ${outfit.favorite ? "active" : ""}" title="Добавить в любимые" aria-label="Добавить в любимые" data-toggle-favorite="${escapeHtml(outfit.id)}">${outfit.favorite ? "♥" : "♡"}</button>
+            ${outfit.photo
+              ? `<img src="${outfit.photo}" alt="${escapeHtml(outfit.title)}">`
+              : `<div class="cover-placeholder" style="--tone:${toneFor(outfit)}"><div class="cover-emoji">${outfit.russianDetail ? "🪆" : "☕"}</div><div class="cover-text">Место для фото образа. Можно загрузить своё изображение в карточке.</div></div>`
+            }
+          </div>
+          <div class="card-body">
+            <div class="badge-row">
+              ${badges.map((badge) => `<span class="badge ${badge === "любимый" ? "good" : badge === "хочу попробовать" ? "try" : ""}">${escapeHtml(badge)}</span>`).join("")}
+            </div>
+            <h3 class="card-title">${escapeHtml(outfit.title)}</h3>
+            <p class="card-text">${escapeHtml(outfit.description)}</p>
+            <div class="palette-dots" aria-label="Палитра">
+              ${(outfit.colors || []).slice(0,6).map((color) => `<span class="color-dot" title="${escapeHtml(color)}" style="background:${colorValue(color)}"></span>`).join("")}
+            </div>
+            <div class="usage-line"><span>${items.length} вещей в образе</span><span class="usage-count">${outfit.favorite ? "любимый" : ""}</span></div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderItemsPage() {
+      const categories = Object.entries(CATEGORY_META);
+      const selected = state.filters.itemCategory;
+      const items = state.data.items.filter((item) => selected === "all" || item.category === selected);
+      const itemCards = items.length ? items.map(renderItemCard).join("") : `<div class="empty-card"><strong>В этой категории пока пусто</strong>Добавь вещь или выбери другую категорию.</div>`;
+
+      const categoryButtons = [
+        `<button class="category-filter ${selected === "all" ? "active" : ""}" data-item-category="all"><span>Все вещи</span><b>${state.data.items.length}</b></button>`,
+        ...categories.map(([id, meta]) => {
+          const count = state.data.items.filter((item) => item.category === id).length;
+          return `<button class="category-filter ${selected === id ? "active" : ""}" data-item-category="${id}"><span>${meta.icon} ${meta.title}</span><b>${count}</b></button>`;
+        })
+      ].join("");
+
+      const content = `
+        <main class="container detail-wrap">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Вещи по категориям</h2>
+              <p class="section-desc">Здесь можно хранить все элементы гардероба, отмечать статус и видеть, какие вещи пока не участвуют в образах.</p>
+            </div>
+            <div class="actions">
+              <button class="primary-btn" data-open-item-modal>+ Добавить вещь</button>
+              <button class="subtle-btn" data-export-all>Экспорт JSON</button>
+              <button class="subtle-btn" data-import-all>Импорт JSON</button>
+            </div>
+          </div>
+
+          <section class="stats-grid">
+            <div class="stat-card"><small>Всего вещей</small><strong>${state.data.items.length}</strong></div>
+            <div class="stat-card"><small>Без образов</small><strong>${getOrphanItems().length}</strong></div>
+            <div class="stat-card"><small>Не знаю как стилизовать</small><strong>${getUnsureItems().length}</strong></div>
+            <div class="stat-card"><small>Категорий</small><strong>${categories.length}</strong></div>
+          </section>
+
+          <section class="items-layout">
+            <aside class="panel side-panel">
+              <h3 class="panel-title">Категории</h3>
+              <p class="panel-desc">Можно быстро посмотреть только обувь, украшения или вещи с русской деталью.</p>
+              <div class="category-list">${categoryButtons}</div>
+            </aside>
+            <div class="item-grid">${itemCards}</div>
+          </section>
+        </main>
+      `;
+      return renderLayout(content);
+    }
+
+    function renderItemCard(item) {
+      const meta = CATEGORY_META[item.category] || { icon: "🧺", title: item.category || "Без категории" };
+      const usage = getItemUsageCount(item.id);
+      const statusClass = item.status === "люблю и ношу" || item.status === "база" ? "good" : item.status === "не знаю как стилизовать" ? "try" : "warm";
+      return `
+        <article class="item-card">
+          <div class="item-photo">
+            ${item.photo ? `<img src="${item.photo}" alt="${escapeHtml(item.name)}">` : `<span class="item-emoji">${meta.icon}</span>`}
+          </div>
+          <div class="badge-row" style="margin-top:12px"><span class="badge ${statusClass}">${escapeHtml(item.status || "без статуса")}</span></div>
+          <h3 class="item-name">${escapeHtml(item.name)}</h3>
+          <div class="item-meta">${meta.title} · ${(item.colors || []).join(", ") || "без цвета"}</div>
+          <div class="usage-line"><span>Используется в образах</span><span class="usage-count">${usage}</span></div>
+          <div class="item-actions">
+            <button class="small-btn" data-edit-item="${escapeHtml(item.id)}">Редактировать</button>
+            <button class="small-btn" data-create-outfit-from-item="${escapeHtml(item.id)}">Образ с вещью</button>
+            <button class="small-btn" data-delete-item="${escapeHtml(item.id)}">Удалить</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderOutfitDetailPage() {
+      const outfit = getOutfitById(state.selectedOutfitId) || state.data.outfits[0];
+      if (!outfit) return renderOutfitsPage();
+      const items = getItemsForOutfit(outfit);
+      const content = `
+        <main class="container detail-wrap">
+          <button class="back" data-nav="outfits">← Назад к образам</button>
+          <section class="detail-grid">
+            <section class="panel detail-cover">
+              <div class="large-cover">
+                ${outfit.photo
+                  ? `<img src="${outfit.photo}" alt="${escapeHtml(outfit.title)}">`
+                  : `<div class="cover-placeholder" style="--tone:${toneFor(outfit)}"><div class="cover-emoji">${outfit.russianDetail ? "🪆" : "☕"}</div><div class="cover-text">Загрузи фото этого образа, чтобы карточка была совсем настоящей.</div></div>`
+                }
+                <button class="favorite-btn ${outfit.favorite ? "active" : ""}" title="Добавить в любимые" data-toggle-favorite="${escapeHtml(outfit.id)}">${outfit.favorite ? "♥" : "♡"}</button>
+              </div>
+              <div class="upload-strip">
+                <label class="subtle-btn" for="detailOutfitPhotoInput">Загрузить фото</label>
+                <input id="detailOutfitPhotoInput" class="hidden-input" type="file" accept="image/*" data-detail-outfit-photo="${escapeHtml(outfit.id)}">
+                ${outfit.photo ? `<button class="danger-btn" data-remove-outfit-photo="${escapeHtml(outfit.id)}">Убрать фото</button>` : ""}
+              </div>
+            </section>
+
+            <section class="panel detail-main">
+              <div class="badge-row">
+                <span class="badge good">${escapeHtml(outfit.status)}</span>
+                <span class="badge warm">${escapeHtml(outfit.temp || "температура не указана")}</span>
+                ${outfit.russianDetail ? `<span class="badge try">русская деталь</span>` : ""}
+              </div>
+              <h2 class="detail-title">${escapeHtml(outfit.title)}</h2>
+              <p class="detail-desc">${escapeHtml(outfit.description)}</p>
+
+              <div class="meta-grid">
+                ${detailMeta("Палитра", (outfit.colors || []).join(", "))}
+                ${detailMeta("Погода", (outfit.weather || []).join(", "))}
+                ${detailMeta("Настроение", (outfit.moods || []).join(", "))}
+                ${detailMeta("Повод", (outfit.occasions || []).join(", "))}
+              </div>
+
+              <div class="detail-section">
+                <h3>Вещи в образе</h3>
+                <div class="mini-items">
+                  ${items.length ? items.map(renderMiniItem).join("") : `<div class="empty-card"><strong>Вещи не выбраны</strong>Можно отредактировать образ и добавить элементы гардероба.</div>`}
+                </div>
+              </div>
+
+              ${outfit.notes ? `<div class="detail-section"><h3>Заметки</h3><p class="panel-desc">${escapeHtml(outfit.notes)}</p></div>` : ""}
+
+              <div class="actions" style="margin-top:24px">
+                <button class="primary-btn" data-edit-outfit="${escapeHtml(outfit.id)}">Редактировать образ</button>
+                <button class="subtle-btn" data-duplicate-outfit="${escapeHtml(outfit.id)}">Дублировать</button>
+                <button class="danger-btn" data-delete-outfit="${escapeHtml(outfit.id)}">Удалить</button>
+              </div>
+            </section>
+          </section>
+        </main>
+      `;
+      return renderLayout(content);
+    }
+
+    function detailMeta(label, value) {
+      return `<div class="meta-card"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value || "—")}</strong></div>`;
+    }
+
+    function renderMiniItem(item) {
+      const meta = CATEGORY_META[item.category] || { icon: "🧺", title: item.category || "Без категории" };
+      return `
+        <div class="mini-item">
+          <div class="mini-thumb">${item.photo ? `<img src="${item.photo}" alt="${escapeHtml(item.name)}">` : meta.icon}</div>
+          <div>
+            <div class="mini-name">${escapeHtml(item.name)}</div>
+            <div class="mini-note">${escapeHtml(meta.title)} · ${(item.colors || []).map(escapeHtml).join(", ")}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPalettesPage() {
+      const content = `
+        <main class="container detail-wrap">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Палитры</h2>
+              <p class="section-desc">Палитры помогают собирать гардероб не хаотично, а вокруг понятных сочетаний.</p>
+            </div>
+          </div>
+          <section class="palette-grid">
+            ${state.data.palettes.map(renderPaletteCard).join("")}
+          </section>
+        </main>
+      `;
+      return renderLayout(content);
+    }
+
+    function renderPaletteCard(palette) {
+      const matchingOutfits = state.data.outfits.filter((outfit) => (palette.colors || []).some((color) => (outfit.colors || []).includes(color)));
+      const matchingItems = state.data.items.filter((item) => (palette.colors || []).some((color) => (item.colors || []).includes(color)));
+      return `
+        <article class="palette-card">
+          <h3 class="palette-name">${escapeHtml(palette.name)}</h3>
+          <p class="palette-desc">${escapeHtml(palette.description)}</p>
+          <div class="swatches">
+            ${(palette.colors || []).map((color) => `<span class="swatch" title="${escapeHtml(color)}" style="background:${colorValue(color)}"></span>`).join("")}
+          </div>
+          <div class="chip-row">
+            <span class="chip">${matchingOutfits.length} образов</span>
+            <span class="chip">${matchingItems.length} вещей</span>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderWishlistPage() {
+      const content = `
+        <main class="container detail-wrap">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Список покупок</h2>
+              <p class="section-desc">Не просто «хочу», а зачем вещь нужна и какие пробелы в гардеробе она закрывает.</p>
+            </div>
+          </div>
+          <section class="wishlist-grid">
+            ${state.data.wishlist.map((wish) => `
+              <article class="wishlist-card">
+                <span class="badge warm">${escapeHtml(wish.priority)}</span>
+                <h3 class="wishlist-name">${escapeHtml(wish.name)}</h3>
+                <p class="wishlist-desc">${escapeHtml(wish.reason)}</p>
+              </article>
+            `).join("")}
+          </section>
+        </main>
+      `;
+      return renderLayout(content);
+    }
+
+    function render() {
+      if (state.page === "items") document.getElementById("app").innerHTML = renderItemsPage();
+      else if (state.page === "palettes") document.getElementById("app").innerHTML = renderPalettesPage();
+      else if (state.page === "wishlist") document.getElementById("app").innerHTML = renderWishlistPage();
+      else if (state.page === "outfit-detail") document.getElementById("app").innerHTML = renderOutfitDetailPage();
+      else document.getElementById("app").innerHTML = renderOutfitsPage();
+
+      renderItemModal();
+      renderOutfitModal();
+    }
+
+    function openItemModal(itemId = null) {
+      state.editingItemId = itemId;
+      state.itemPhotoDraft = itemId ? getItemById(itemId)?.photo || null : null;
+      state.itemModalOpen = true;
+      renderItemModal();
+    }
+
+    function renderItemModal() {
+      const modal = document.getElementById("itemModal");
+      modal.classList.toggle("hidden", !state.itemModalOpen);
+      modal.setAttribute("aria-hidden", state.itemModalOpen ? "false" : "true");
+      if (!state.itemModalOpen) return;
+
+      const item = state.editingItemId ? getItemById(state.editingItemId) : null;
+      document.getElementById("itemModalTitle").textContent = item ? "Редактировать вещь" : "Добавить вещь";
+
+      const categorySelect = document.getElementById("itemCategoryInput");
+      categorySelect.innerHTML = Object.entries(CATEGORY_META).map(([id, meta]) => `<option value="${id}">${meta.icon} ${meta.title}</option>`).join("");
+
+      const statusSelect = document.getElementById("itemStatusInput");
+      statusSelect.innerHTML = ITEM_STATUSES.map((status) => `<option value="${escapeHtml(status)}">${escapeHtml(status)}</option>`).join("");
+
+      document.getElementById("itemNameInput").value = item?.name || "";
+      categorySelect.value = item?.category || "knitwear";
+      document.getElementById("itemColorsInput").value = joinTags(item?.colors || []);
+      statusSelect.value = item?.status || "люблю и ношу";
+      document.getElementById("itemWeatherInput").value = joinTags(item?.weather || []);
+      document.getElementById("itemMoodsInput").value = joinTags(item?.moods || []);
+      document.getElementById("itemStylesInput").value = joinTags(item?.styles || []);
+      document.getElementById("itemNotesInput").value = item?.notes || "";
+      renderImagePreview("itemPhotoPreview", state.itemPhotoDraft, "Фото вещи");
+    }
+
+    function openOutfitModal(outfitId = null, presetItemId = null) {
+      state.editingOutfitId = outfitId;
+      state.outfitPhotoDraft = outfitId ? getOutfitById(outfitId)?.photo || null : null;
+      state.outfitModalOpen = true;
+      renderOutfitModal(presetItemId);
+    }
+
+    function renderOutfitModal(presetItemId = null) {
+      const modal = document.getElementById("outfitModal");
+      modal.classList.toggle("hidden", !state.outfitModalOpen);
+      modal.setAttribute("aria-hidden", state.outfitModalOpen ? "false" : "true");
+      if (!state.outfitModalOpen) return;
+
+      const outfit = state.editingOutfitId ? getOutfitById(state.editingOutfitId) : null;
+      document.getElementById("outfitModalTitle").textContent = outfit ? "Редактировать образ" : "Добавить образ";
+
+      const statusSelect = document.getElementById("outfitStatusInput");
+      statusSelect.innerHTML = OUTFIT_STATUSES.map((status) => `<option value="${escapeHtml(status)}">${escapeHtml(status)}</option>`).join("");
+
+      document.getElementById("outfitTitleInput").value = outfit?.title || "";
+      document.getElementById("outfitDescInput").value = outfit?.description || "";
+      statusSelect.value = outfit?.status || "готовый образ";
+      document.getElementById("outfitColorsInput").value = joinTags(outfit?.colors || []);
+      document.getElementById("outfitWeatherInput").value = joinTags(outfit?.weather || []);
+      document.getElementById("outfitMoodsInput").value = joinTags(outfit?.moods || []);
+      document.getElementById("outfitOccasionsInput").value = joinTags(outfit?.occasions || []);
+      document.getElementById("outfitStylesInput").value = joinTags(outfit?.styles || []);
+      document.getElementById("outfitTempsInput").value = outfit?.temp || "";
+      document.getElementById("outfitNotesInput").value = outfit?.notes || "";
+      renderImagePreview("outfitPhotoPreview", state.outfitPhotoDraft, "Фото образа");
+
+      const selectedIds = new Set(outfit?.itemIds || (presetItemId ? [presetItemId] : []));
+      document.getElementById("outfitItemsChecklist").innerHTML = state.data.items.map((item) => {
+        const meta = CATEGORY_META[item.category] || { icon: "🧺", title: item.category || "Без категории" };
+        return `
+          <label class="check-item">
+            <input type="checkbox" value="${escapeHtml(item.id)}" data-outfit-item-checkbox ${selectedIds.has(item.id) ? "checked" : ""}>
+            <span><strong>${escapeHtml(item.name)}</strong><br>${meta.icon} ${escapeHtml(meta.title)}</span>
+          </label>
+        `;
+      }).join("");
+    }
+
+    function renderImagePreview(elementId, src, title) {
+      const preview = document.getElementById(elementId);
+      if (!preview) return;
+      preview.innerHTML = src
+        ? `<img src="${src}" alt="${escapeHtml(title)}">`
+        : `<div><strong>${escapeHtml(title)}</strong><span>Нажми, чтобы загрузить изображение</span></div>`;
+    }
+
+    function closeModal(type) {
+      if (type === "item") {
+        state.itemModalOpen = false;
+        state.editingItemId = null;
+        state.itemPhotoDraft = null;
+      }
+      if (type === "outfit") {
+        state.outfitModalOpen = false;
+        state.editingOutfitId = null;
+        state.outfitPhotoDraft = null;
+      }
+      render();
+    }
+
+    function saveItemFromModal() {
+      const name = document.getElementById("itemNameInput").value.trim();
+      if (!name) {
+        alert("Напиши название вещи.");
+        return;
+      }
+
+      const payload = {
+        name,
+        category: document.getElementById("itemCategoryInput").value,
+        colors: splitTags(document.getElementById("itemColorsInput").value),
+        status: document.getElementById("itemStatusInput").value,
+        weather: splitTags(document.getElementById("itemWeatherInput").value),
+        moods: splitTags(document.getElementById("itemMoodsInput").value),
+        styles: splitTags(document.getElementById("itemStylesInput").value),
+        notes: document.getElementById("itemNotesInput").value.trim(),
+        photo: state.itemPhotoDraft
+      };
+
+      if (state.editingItemId) {
+        const index = state.data.items.findIndex((item) => item.id === state.editingItemId);
+        if (index !== -1) state.data.items[index] = { ...state.data.items[index], ...payload };
+      } else {
+        state.data.items.unshift({ id: createId("item"), ...payload });
+      }
+
+      saveData();
+      closeModal("item");
+    }
+
+    function saveOutfitFromModal() {
+      const title = document.getElementById("outfitTitleInput").value.trim();
+      if (!title) {
+        alert("Напиши название образа.");
+        return;
+      }
+
+      const checkedItemIds = [...document.querySelectorAll("[data-outfit-item-checkbox]:checked")].map((input) => input.value);
+      const status = document.getElementById("outfitStatusInput").value;
+      const colors = splitTags(document.getElementById("outfitColorsInput").value);
+
+      const payload = {
+        title,
+        description: document.getElementById("outfitDescInput").value.trim(),
+        status,
+        colors,
+        weather: splitTags(document.getElementById("outfitWeatherInput").value),
+        moods: splitTags(document.getElementById("outfitMoodsInput").value),
+        occasions: splitTags(document.getElementById("outfitOccasionsInput").value),
+        styles: splitTags(document.getElementById("outfitStylesInput").value),
+        temp: document.getElementById("outfitTempsInput").value.trim(),
+        notes: document.getElementById("outfitNotesInput").value.trim(),
+        itemIds: checkedItemIds,
+        russianDetail: [
+          ...splitTags(document.getElementById("outfitMoodsInput").value),
+          ...splitTags(document.getElementById("outfitStylesInput").value)
+        ].includes("русская деталь"),
+        photo: state.outfitPhotoDraft
+      };
+
+      if (state.editingOutfitId) {
+        const index = state.data.outfits.findIndex((outfit) => outfit.id === state.editingOutfitId);
+        if (index !== -1) state.data.outfits[index] = { ...state.data.outfits[index], ...payload };
+      } else {
+        state.data.outfits.unshift({
+          id: createId("outfit"),
+          favorite: status === "любимый",
+          toneIndex: state.data.outfits.length % TONES.length,
+          ...payload
+        });
+      }
+
+      saveData();
+      closeModal("outfit");
+    }
+
+    function toggleFavorite(outfitId) {
+      const outfit = getOutfitById(outfitId);
+      if (!outfit) return;
+      outfit.favorite = !outfit.favorite;
+      if (outfit.favorite && outfit.status === "готовый образ") outfit.status = "любимый";
+      saveData();
+      render();
+    }
+
+    function deleteOutfit(outfitId) {
+      const outfit = getOutfitById(outfitId);
+      if (!outfit) return;
+      if (!confirm(`Удалить образ «${outfit.title}»?`)) return;
+      state.data.outfits = state.data.outfits.filter((entry) => entry.id !== outfitId);
+      state.page = "outfits";
+      state.selectedOutfitId = null;
+      saveData();
+      render();
+    }
+
+    function deleteItem(itemId) {
+      const item = getItemById(itemId);
+      if (!item) return;
+      if (!confirm(`Удалить вещь «${item.name}»? Она также удалится из образов.`)) return;
+      state.data.items = state.data.items.filter((entry) => entry.id !== itemId);
+      state.data.outfits.forEach((outfit) => {
+        outfit.itemIds = (outfit.itemIds || []).filter((id) => id !== itemId);
+      });
+      saveData();
+      render();
+    }
+
+    function duplicateOutfit(outfitId) {
+      const outfit = getOutfitById(outfitId);
+      if (!outfit) return;
+      const copy = clone(outfit);
+      copy.id = createId("outfit");
+      copy.title = `${copy.title} — копия`;
+      copy.favorite = false;
+      copy.status = "хочу попробовать";
+      state.data.outfits.unshift(copy);
+      saveData();
+      state.page = "outfit-detail";
+      state.selectedOutfitId = copy.id;
+      render();
+    }
+
+    function removeOutfitPhoto(outfitId) {
+      const outfit = getOutfitById(outfitId);
+      if (!outfit) return;
+      outfit.photo = null;
+      saveData();
+      render();
+    }
+
+    function exportAll() {
+      const payload = {
+        type: "polina-wardrobe",
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        ...state.data
+      };
+      downloadJson(payload, "moi-garderob.json");
+    }
+
+    function downloadJson(payload, filename) {
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJsonFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || "{}"));
+          if (!Array.isArray(parsed.items) || !Array.isArray(parsed.outfits)) throw new Error("bad file");
+          state.data = normalizeData(parsed);
+          state.page = "outfits";
+          state.selectedOutfitId = null;
+          saveData();
+          render();
+          alert("Гардероб импортирован.");
+        } catch (error) {
+          alert("Не получилось импортировать файл. Проверь, что это JSON, экспортированный из этого гардероба.");
+        } finally {
+          event.target.value = "";
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    function compressImage(source, maxSize = 1400, quality = .82) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const ratio = Math.min(maxSize / img.width, maxSize / img.height, 1);
+          const width = Math.round(img.width * ratio);
+          const height = Math.round(img.height * ratio);
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        };
+        img.src = source;
+      });
+    }
+
+    function readImageFile(file, callback) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        compressImage(reader.result).then(callback).catch(() => callback(reader.result));
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.addEventListener("click", (event) => {
+      const nav = event.target.closest("[data-nav]");
+      if (nav) {
+        state.page = nav.dataset.nav;
+        state.selectedOutfitId = null;
+        render();
+        return;
+      }
+
+      const tab = event.target.closest("[data-tab]");
+      if (tab) {
+        state.filters.tab = tab.dataset.tab;
+        render();
+        return;
+      }
+
+      const openOutfit = event.target.closest("[data-open-outfit]");
+      if (openOutfit) {
+        state.page = "outfit-detail";
+        state.selectedOutfitId = openOutfit.dataset.openOutfit;
+        render();
+        return;
+      }
+
+      const favorite = event.target.closest("[data-toggle-favorite]");
+      if (favorite) {
+        event.stopPropagation();
+        toggleFavorite(favorite.dataset.toggleFavorite);
+        return;
+      }
+
+      if (event.target.closest("[data-open-item-modal]")) {
+        openItemModal();
+        return;
+      }
+
+      if (event.target.closest("[data-open-outfit-modal]")) {
+        openOutfitModal();
+        return;
+      }
+
+      const close = event.target.closest("[data-close-modal]");
+      if (close) {
+        closeModal(close.dataset.closeModal);
+        return;
+      }
+
+      if (event.target.closest("[data-save-item]")) {
+        saveItemFromModal();
+        return;
+      }
+
+      if (event.target.closest("[data-save-outfit]")) {
+        saveOutfitFromModal();
+        return;
+      }
+
+      const editItem = event.target.closest("[data-edit-item]");
+      if (editItem) {
+        openItemModal(editItem.dataset.editItem);
+        return;
+      }
+
+      const deleteItemBtn = event.target.closest("[data-delete-item]");
+      if (deleteItemBtn) {
+        deleteItem(deleteItemBtn.dataset.deleteItem);
+        return;
+      }
+
+      const category = event.target.closest("[data-item-category]");
+      if (category) {
+        state.filters.itemCategory = category.dataset.itemCategory;
+        render();
+        return;
+      }
+
+      const createFromItem = event.target.closest("[data-create-outfit-from-item]");
+      if (createFromItem) {
+        openOutfitModal(null, createFromItem.dataset.createOutfitFromItem);
+        return;
+      }
+
+      const editOutfit = event.target.closest("[data-edit-outfit]");
+      if (editOutfit) {
+        openOutfitModal(editOutfit.dataset.editOutfit);
+        return;
+      }
+
+      const duplicate = event.target.closest("[data-duplicate-outfit]");
+      if (duplicate) {
+        duplicateOutfit(duplicate.dataset.duplicateOutfit);
+        return;
+      }
+
+      const deleteOutfitBtn = event.target.closest("[data-delete-outfit]");
+      if (deleteOutfitBtn) {
+        deleteOutfit(deleteOutfitBtn.dataset.deleteOutfit);
+        return;
+      }
+
+      const removePhoto = event.target.closest("[data-remove-outfit-photo]");
+      if (removePhoto) {
+        removeOutfitPhoto(removePhoto.dataset.removeOutfitPhoto);
+        return;
+      }
+
+      if (event.target.closest("[data-export-all]")) {
+        exportAll();
+        return;
+      }
+
+      if (event.target.closest("[data-import-all]")) {
+        document.getElementById("importFileInput").click();
+      }
+    });
+
+    document.addEventListener("input", (event) => {
+      if (event.target.matches("[data-filter-search]")) {
+        state.filters.search = event.target.value;
+        render();
+      }
+    });
+
+    document.addEventListener("change", (event) => {
+      const filter = event.target.closest("[data-filter-select]");
+      if (filter) {
+        state.filters[filter.dataset.filterSelect] = filter.value;
+        render();
+        return;
+      }
+
+      if (event.target.id === "importFileInput") {
+        importJsonFile(event);
+        return;
+      }
+
+      if (event.target.id === "itemPhotoInput") {
+        readImageFile(event.target.files && event.target.files[0], (src) => {
+          state.itemPhotoDraft = src;
+          renderImagePreview("itemPhotoPreview", src, "Фото вещи");
+        });
+        return;
+      }
+
+      if (event.target.id === "outfitPhotoInput") {
+        readImageFile(event.target.files && event.target.files[0], (src) => {
+          state.outfitPhotoDraft = src;
+          renderImagePreview("outfitPhotoPreview", src, "Фото образа");
+        });
+        return;
+      }
+
+      const detailPhoto = event.target.closest("[data-detail-outfit-photo]");
+      if (detailPhoto) {
+        const outfitId = detailPhoto.dataset.detailOutfitPhoto;
+        readImageFile(detailPhoto.files && detailPhoto.files[0], (src) => {
+          const outfit = getOutfitById(outfitId);
+          if (!outfit) return;
+          outfit.photo = src;
+          saveData();
+          render();
+        });
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (state.itemModalOpen) closeModal("item");
+      if (state.outfitModalOpen) closeModal("outfit");
+    });
+
+    document.getElementById("itemModal").addEventListener("click", (event) => {
+      if (event.target.id === "itemModal") closeModal("item");
+    });
+
+    document.getElementById("outfitModal").addEventListener("click", (event) => {
+      if (event.target.id === "outfitModal") closeModal("outfit");
+    });
+
+    render();
+  </script>
+</body>
+</html>
